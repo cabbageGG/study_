@@ -1,0 +1,15 @@
+一、scrapy response 分析
+
+1、status：状态码
+2、text：网页内容（字符串）
+3、body：网页内容（bytes）
+4、url：返回url
+5、headers：返回headers
+6、selector：选择器，（用于xpath,css）
+7、request：请求内容
+
+
+
+
+
+

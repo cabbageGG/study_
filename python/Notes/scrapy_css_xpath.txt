@@ -1,0 +1,18 @@
+scrapy学习核心点一：xpath 和 css 选择器使用！！！！！
+
+https://www.cnblogs.com/ruoniao/p/6875227.html 学习这个人的学习心得
+
+Scrapy xpath 语法
+  常用语句 ‘//div[@class=“XXX”]/h1/text()’ ‘//div[@class=“XXX”]/a/@href’
+  Xpath 好像不支持正则表达式结合搜索，不过xpath自己有内置的函数来完成这一工作
+  如：常用的有contains(@class, “XX”) starts-with(@class, “XX”) ends-with(@class, “XX”)
+
+Scrape css 语法
+  常用语句 ‘div.XXX h1::text’  ‘div.XXX a::attr(href)’
+  css 支持正则表达式。不过是自己的正则表达式规则。感觉比较弱。
+  如：常用的有 ‘a[href^=“XX”]’ 以XX字符串开头
+            ‘a[href*=“XX”]’ 包含XX字符串 
+            ‘a[href$=“XX”]’ 以XX字符串结尾
+
+
+

@@ -1,0 +1,29 @@
+一、scrapy 模拟登陆
+
+1、重写spider类的start_requests函数。
+  该函数是爬虫爬取网页的入口。
+  当我们需要爬取的网页需要登陆时，需要重写该函数，做一些爬取前的操作。比如：常见的登陆。
+  当登陆成功后，继续从start_url开始爬取。
+
+    def start_requests(self):
+       return [scrapy.Request('https://www.zhihu.com/#signin', headers=self.headers, callback=self.login)] 
+    
+    注意：return 必须是[]!!!!!
+  
+    登陆成功后，还需要继续爬取，故需要还原如下操作            
+	for url in self.start_urls:
+            yield scrapy.Request(url, dont_filter=True, headers=self.headers)
+
+    def check_login(self, response):
+        #验证服务器的返回数据判断是否成功
+        text_json = json.loads(response.text)
+        if "msg" in text_json and text_json["msg"] == "登录成功":
+            for url in self.start_urls:
+                yield scrapy.Request(url, dont_filter=True, headers=self.headers)
+
+2、在模拟登陆过程中需要用到的请求方式。在scrapy中有两种。
+   Get请求，常用scrapy.Request()
+   Post请求 常用scrapy.FromRequest()
+
+3、注意：这种模拟登陆过程，不需要异步操作。直接同步使用。如直接用scrapy.Request(),而不是yield Request() 方式。
+

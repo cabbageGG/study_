@@ -1,0 +1,18 @@
+Python 正则表达式 re模块
+
+1, re.match(‘p’, ‘python’) 会在字符串的开头匹配正则表达式: 如果开头即不符合,则匹配失败.
+  （解决方法：加入声明 re.DOTALL 如：re.match(‘p’,’python’,re.DOTALL) )
+
+2, 而re.search('net_command', url)会扫描整个字符串,直到找到第一个匹配结果返回. 二者的匹配结果也可通过group()方法来获取. 
+
+3, re.findall('net_command', url) 会查找所有匹配结果,并返回结果列表. 而re.finditer()找到匹配结果,将它们作为一个迭代器返回. 
+
+4, re.sub('net_command', 'command_net', url) 用于匹配结果的替换操作, 等同于 url.replace('net_command', 'command_net'). sub()方法的第四个参数表示替换次数,默认0为全部替换. 
+
+5, re.split('/', url), 等同于 url.split('/'), split()方法的第三个参数表示分割次数,默认0为全部. 
+
+6, start(), end(), 分别表示匹配结果的开始和结束索引. 而span()则返回开始和结束索引组成的元组. 
+
+7, 正则表达式参数, re.VERBOSE(或re.X)可使正则表达式结构化,形式更易读. re.DOTALL(或re.S)使得 . 匹配包括换行符在内的任意字符. re.IGNORECASE(或re.I)使得匹配对大小写不敏感. re.MULTILINE(或re.M)使得多行匹配生效,影响^和$的首尾匹配. 
+
+8, 相比于re模块,我们应该尽可能地使用字符串自身的一些操作方法, 如replace和translate用于子字符串替换(替代re.sub()), index和find用于查找操作(替代re.search()和re.match()).

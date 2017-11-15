@@ -1,0 +1,109 @@
+nginx+uwsgi部署django
+
+1、安装uwsgi
+  pip install uwsgi
+  
+  使用django项目 测试uwsgi是否安装成功
+  uwsgi --http :8000 --module mysite.wsgi
+  说明：mysite.wsgi指向你的项目的wsgi.py文件
+       比如我的目录结构为mysite->mysite->wsgi.py，则那条语句在第一个mysite下执行
+  项目正常运行，则表示成功。
+
+2、安装Nginx
+  wget http://nginx.org/download/nginx-1.5.6.tar.gz  
+  tar xf nginx-1.5.6.tar.gz  
+  cd nginx-1.5.6  
+  ./configure   
+  make && make install 
+  
+  可能出现问题：
+  ./configure: error:the HTTP gzip module requires the pcre library. 或者其他库
+  解决方法：手动安装这些库即可
+
+  测试安装是否正常，执行如下命令，启动nginx
+  /usr/local/nginx/sbin/nginx  
+  (注：可能路径不一样，就是执行这个nginx命令，来启动nginx）
+  浏览器输入127.0.0.1:80 
+  结果出现 Welcome to nginx! 就表示正常。
+
+3、配置uwsgi
+  这里以ini文件配置为例子。在/etc/目录下新建myuwsgi.ini,并添加以下配置
+[uwsgi]  
+  
+# Django-related settings  
+# the base directory (full path)  
+chdir             = /path/to/your/project   
+# Django's wsgi file  
+module            = project.wsgi  
+# the virtualenv (full path)  
+# home            = /path/to/virtualenv  
+  
+# process-related settings  
+# master  
+master          = true  
+# maximum number of worker processes  
+processes       = 2  
+# the socket (use the full path to be safe  
+socket          = 127.0.0.1:9090  
+# ... with appropriate permissions - may be needed  
+# chmod-socket    = 664  
+# clear environment on exit  
+vacuum          = true  
+
+
+说明：核心配置为
+chdir   你的django项目的绝对路径
+module  你的django项目的wsgi.py 文件配置
+socket  服务器地址和端口号
+
+4、配置nginx
+
+ 找到nginx的安装目录（如：/usr/local/nginx/），打开conf/nginx.conf文件，修改server配置或添加server配置：
+
+server {  
+    # the port your site will be served on  
+    listen      8000;  
+    # the domain name it will serve for  
+    server_name 127.0.0.1; # substitute your machine's IP address or FQDN，#这里是填你的域名或ip，然后在浏览器通过这个访问  
+    charset     utf-8;  
+  
+    # max upload size  
+    client_max_body_size 75M;   # adjust to taste  
+  
+    # Django media  
+    location /media  {  
+        alias /smile/code/wx_smile/media;  # your Django project's media files - amend as required  
+    }  
+  
+    location /static {  
+        alias /smile/code/wx_smile/static; # your Django project's static files - amend as required  
+    }  
+  
+    # Finally, send all non-media requests to the Django server.  
+    location / {  
+        uwsgi_pass  127.0.0.1:9090; #一定要跟uwsgi配置的一样  
+        include     uwsgi_params; # the uwsgi_params file you installed  
+        uwsgi_param UWSGI_CHDIR /smile/code/wx_smile; #你的项目的路径，最好用完整路径  
+        uwsgi_param UWSGI_SCRIPT wx_smile.wsgi; #指向wsgi.py，相对于项目的根目录  
+    }  
+} 
+
+
+说明：注意配置上图5个有中文注释的地方。
+
+5、启动 uwsgi 和 nginx 服务
+   uwsgi --ini /etc/myuwsgi.ini & /usr/local/nginx/sbin/nginx 
+   注：可能需要root权限
+
+
+6、整个流程理解
+
+  1>用户通过浏览器访问nginx服务  127.0.0.1:80
+  2>nginx 服务器转发网页请求到 uwsgi 服务器 127.0.0.1:9090
+  3>uwsgi 服务器将请求内容传递给 django 应用，来做一个请求处理
+  4>Django 应用处理请求，然后返回结果给uwsgi服务器。
+  5>uwsgi 转发结果给nginx
+  6>nginx 返回结果给浏览器用户。
+
+
+参考链接：http://blog.csdn.net/a249900679/article/details/51619382

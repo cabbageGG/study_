@@ -1,0 +1,58 @@
+Mysql 基本用法
+
+1、 安装完mysql后，会给一个root始化密码
+2、 修改root密码：set password for root@localhost = password(‘newpassword’);
+3、 创建新用户：create user ‘dev’@‘localhost’ identified by ‘123456’
+4、 给用户授权：GRANT privileges ON databasename.tablename TO 'username'@'host
+          如：GRANT ALL ON *.* TO 'dev’@‘localhost’;
+5、 创建数据库：create database name;
+6、 创建数据表：create table tablename(
+                Varyname1 type (not null) (default value) (primary key),
+		Varyname2 type (not null) (default value) (primary key)
+    );
+    Type 类型有 http://www.cnblogs.com/zbseoag/archive/2013/03/19/2970004.html
+    主要的：
+    tinyint 1字节 
+    int     4字节  
+    bigint  8字节
+    float   4字节
+    double  8字节
+    char    255字符   固定长度
+    varchar 65535字符 固定长度
+    text    65535字符 可变长度
+    longtext 2^32-1字符 可变长度
+7、 增删改查：
+    insert into tablename (col1, col2, col3, col4) values (v1,v2,v3,v4);
+    delete from tablename [where col=value];
+    update tablename set col1=value1 where col2=value2;
+    SELECT * from tablename (where col=value);
+
+8、 删除用户：DROP USER 'username'@'host'; 
+
+MySQL 常见问题：
+
+1、设置数据库，数据表编码utf8。（默认不支持中文的）
+  创建时设置：create database dbname character set utf8;
+  创建后修改：alter database dbname character set utf8;
+
+2、字段的类型varchar 必须加上固定长度值
+  如：varchar(200) right
+     varchar      wrong
+
+
+MySQL 高级用法
+
+1、在插入数据时，如果数据主键已经存在，则变成更新数据。这个操作很常见。
+   insert into tablename(col1, col2) VALUES (%s, %s)
+     ON DUPLICATE KEY UPDATE col1=VALUES(col1), col2=VALUES(col2)  
+
+2、mysql 修改表结构
+  使用ALTER 语句
+  删除列
+  ALTER TABLE person DROP COLUMN birthday;
+  添加列
+  ALTER TABLE person ADD COLUMN birthday datetime; 
+  修改列 类型为 bigint 名称为id
+  ALTER TABLE person MODIFY number id BIGINT NOT NULL;
+  添加主键
+  ALTER TABLE person ADD PRIMARY KEY (id);

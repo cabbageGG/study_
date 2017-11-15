@@ -1,0 +1,50 @@
+Mac 配置PHP，nginx
+https://www.cnblogs.com/ym1992it/p/4599112.html
+
+1、安装nginx
+   brew install nginx 后者下载源码tar包，自己解压安装 make install
+
+2、安装php
+  首先，在brew中添加php的源：
+  brew tap josegonzalez/php
+  brew tap homebrew/dupes
+  安装：
+  brew install php55 --with-fpm, --with-enchant, --with-debug
+
+3、配置php-fpm  https://www.cnblogs.com/lilei9110/p/6255877.html
+  sudo cp /private/etc/php-fpm.conf.default /private/etc/php-fpm.conf
+  修改error_log
+
+4、配置nginx  http://ju.outofmemory.cn/entry/74778
+  server{
+    listen 80;
+    server_name demo.local;
+    index index.html index.htm index.php;
+    root /path/to;
+    location / {
+        if (!-e $request_filename) {
+            rewrite  ^(.*)$  /index.php?s=$1  last;
+            break;
+        }
+    }
+    location ~ \.php$ {
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+  }
+
+5、启动php-fpm
+  sudo php-fpm
+  可以查看是否启动成功。lsof -i:9000 有进程代表成功
+  出错的话，请查看3、配置php-fpm
+  
+
+6、启动nginx
+  sudo /usr/local/nginx/sbin/nginx
+  停止nginx
+  sudo /usr/local/nginx/sbin/nginx -s quit
+
+
+

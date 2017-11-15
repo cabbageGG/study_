@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name="renderer" content="webkit"> 
+  <title>我的地盘 - 禅道</title>
+<script>var config={"webRoot":"\/","cookieLife":30,"requestType":"GET","pathType":"clean","requestFix":"-","moduleVar":"m","methodVar":"f","viewVar":"t","defaultView":"html","themeRoot":"\/theme\/","currentModule":"my","currentMethod":"index","clientLang":"zh-cn","requiredFields":"","router":"\/index.php","timeout":30000};
+var lang={"submitting":"\u7a0d\u5019...","save":"\u4fdd\u5b58","timeout":"\u8fde\u63a5\u8d85\u65f6\uff0c\u8bf7\u68c0\u67e5\u7f51\u7edc\u73af\u5883\uff0c\u6216\u91cd\u8bd5\uff01"};
+
+</script>
+<script src='/js/all.js?v=7.0'></script>
+<link rel='stylesheet' href='/theme/default/zh-cn.default.css?v=7.0' type='text/css' media='screen' />
+<style>.panel-block {height: 208px;overflow: auto; padding: 0}
+.panel-block.dynamic {height: 435px;}
+.panel-block .panel-heading {padding: 6px 10px; margin: 0;}
+.panel-block .panel-actions.pull-right {line-height: 36px; margin-right: -2px; margin-right: 5px!important\0}
+.panel > .table > thead > tr > th, .panel > form > .table > thead > tr > th {background: #f1f1f1!important}
+.panel-block td, .panel-block th {padding: 6px 6px 5px;}
+.panel-block.dynamic td {padding: 5px 6px 5px; overflow: hidden;}
+.panel-block tr > td:first-child, .panel-block tr > th:first-child, .outer .table tr > th:first-child, .outer .table tr > td:first-child {padding-left: 10px;}
+.panel-block .icon {color: #666; display: inline-block; margin-right: 2px;}
+#wrap .outer {padding: 20px 20px 0}
+.outer .panel-block .table tbody > tr:last-child td {border-bottom: none}
+
+.outer .row {padding: 0 !important; margin: 0 -10px}
+.outer .row > .col-md-8, .outer .row > .col-md-4 {padding: 0 10px}
+
+.projectline-canvas {position: relative;}
+</style><link rel='icon' href='/favicon.ico' type='image/x-icon' />
+<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon' />
+<!--[if lt IE 9]>
+<script src='/js/html5shiv/min.js?v=1423185140'></script>
+<script src='/js/respond/min.js?v=1423185140'></script>
+<![endif]-->
+<!--[if lt IE 10]>
+<script src='/js/jquery/placeholder/min.js?v=1423185140'></script>
+<![endif]-->
+</head>
+<body>
+<script> 
+noResultsMatch       = '没有匹配结果';
+chooseUsersToMail    = '选择要发信通知的用户...';
+defaultChosenOptions = {no_results_text: noResultsMatch, width:'100%', allow_single_deselect: true, disable_search_threshold: 1, placeholder_text_single: ' ', placeholder_text_multiple: ' ', search_contains: true};
+$(document).ready(function()
+{
+    $("#mailto").attr('data-placeholder', chooseUsersToMail);
+    $("#mailto, .chosen, #productID").each(function()
+    {
+        var $this = $(this);
+        if($this.offset().top + 240 > $(document.body).height())
+        {
+            $this.attr('data-css-class', 'chosen-up');
+        }
+    }).chosen(defaultChosenOptions);
+});
+</script>
+<header id='header'>
+  <div id='topbar'>
+    <div class='pull-right' id='topnav'><div class='dropdown' id='userMenu'><a href='javascript:;' data-toggle='dropdown'><i class='icon-user'></i> 阳进 <span class='caret'></span></a><ul class='dropdown-menu'><li><a href='/index.php?m=my&f=profile&onlybody=yes' target='' class='iframe' data-width='600'>个人档案</a>
+</li><li><a href='/index.php?m=my&f=changepassword&onlybody=yes' target='' class='iframe' data-width='500'>更改密码</a>
+</li><li class='divider'></li><li class='dropdown-submenu left'><a href='javascript:;'>主题</a><ul class='dropdown-menu'><li class='theme-option active'><a href='javascript:selectTheme("default");' data-value='default'>默认</a></li><li class='theme-option'><a href='javascript:selectTheme("green");' data-value='green'>绿色</a></li><li class='theme-option'><a href='javascript:selectTheme("red");' data-value='red'>红色</a></li><li class='theme-option'><a href='javascript:selectTheme("lightblue");' data-value='lightblue'>亮蓝</a></li><li class='theme-option'><a href='javascript:selectTheme("blackberry");' data-value='blackberry'>黑莓</a></li></ul></li><li class='dropdown-submenu left'><a href='javascript:;'>Language</a><ul class='dropdown-menu'><li class='lang-option active'><a href='javascript:selectLang("zh-cn");' data-value='zh-cn'>简体</a></li><li class='lang-option'><a href='javascript:selectLang("zh-tw");' data-value='zh-tw'>繁體</a></li><li class='lang-option'><a href='javascript:selectLang("en");' data-value='en'>English</a></li></ul></li></ul></div><a href='/index.php?m=user&f=logout' >退出</a>
+<a href='/index.php?m=misc&f=about' target='' class='about iframe' data-width='900' data-headerless='true' data-class='modal-about'>关于</a>
+</div>
+    <h5 id='companyname'>
+      广州趣炫项目管理系统    </h5>
+  </div>
+  <nav id='mainmenu'>
+    <ul class='nav'>
+<li class='active'><a href='/index.php?m=my&f=index' class='active' id='menumy'><i class="icon-home"></i><span> 我的地盘</span></a></li>
+<li ><a href='/index.php?m=product&f=index'  id='menuproduct'>产品</a></li>
+<li ><a href='/index.php?m=project&f=index'  id='menuproject'>项目</a></li>
+<li ><a href='/index.php?m=qa&f=index'  id='menuqa'>测试</a></li>
+<li ><a href='/index.php?m=doc&f=index'  id='menudoc'>文档</a></li>
+<li ><a href='/index.php?m=report&f=index'  id='menureport'>统计</a></li>
+<li ><a href='/index.php?m=company&f=index'  id='menucompany'>组织</a></li>
+</ul>
+<div class='input-group input-group-sm' id='searchbox'><div class='input-group-btn' id='typeSelector'><button type='button' class='btn dropdown-toggle' data-toggle='dropdown'><span id='searchTypeName'>Bug</span> <span class='caret'></span></button><input type='hidden' name='searchType' id='searchType' value='bug'  />
+<ul class='dropdown-menu'><li><a href='javascript:;' data-value='bug'>Bug</a></li><li><a href='javascript:;' data-value='story'>需求</a></li><li><a href='javascript:;' data-value='task'>任务</a></li><li><a href='javascript:;' data-value='testcase'>用例</a></li><li><a href='javascript:;' data-value='project'>项目</a></li><li><a href='javascript:;' data-value='product'>产品</a></li><li><a href='javascript:;' data-value='user'>用户</a></li><li><a href='javascript:;' data-value='build'>版本</a></li><li><a href='javascript:;' data-value='release'>发布</a></li><li><a href='javascript:;' data-value='productplan'>产品计划</a></li><li><a href='javascript:;' data-value='testtask'>测试版本</a></li><li><a href='javascript:;' data-value='doc'>文档</a></li></ul></div><input type='text' name='searchQuery' id='searchQuery' value='' onclick='this.value=""' onkeydown='if(event.keyCode==13) shortcut()' class='form-control' placeholder='编号(ctrl+g)' />
+<div id='objectSwitcher' class='input-group-btn'><a href='javascript:shortcut();' class='btn'>GO! </a></div></div>
+  </nav>
+  <nav id="modulemenu">
+    <ul class='nav'>
+<li><span id="myname"><i class="icon-user"></i> 阳进&nbsp;<i class="icon-angle-right"></i>&nbsp;</span></li>
+<li class=' active'><a href='/index.php?m=my&f=index' target='' id=submenuindex>首页</a>
+</li>
+<li class=' '><a href='/index.php?m=my&f=todo' target='' id=submenutodo>待办</a>
+</li>
+<li class=' '><a href='/index.php?m=my&f=task' target='' id=submenutask>任务</a>
+</li>
+<li class=' '><a href='/index.php?m=my&f=bug' target='' id=submenubug>Bug</a>
+</li>
+<li class=' '><a href='/index.php?m=my&f=story' target='' id=submenustory>需求</a>
+</li>
+<li class=' '><a href='/index.php?m=my&f=project' target='' id=submenumyProject>项目</a>
+</li>
+<li class=' '><a href='/index.php?m=my&f=dynamic' target='' id=submenudynamic>动态</a>
+</li>
+<li class=' '><a href='/index.php?m=my&f=profile' target='' id=submenuprofile>档案</a>
+</li>
+<li class=' '><a href='/index.php?m=my&f=changepassword' target='' id=submenuchangePassword>密码</a>
+</li>
+</ul>
+  </nav>
+</header>
+
+<div id='wrap'>
+  <div class='outer'>
+<style>
+.projectline {padding: 2px!important}
+</style>
+<!--[if lte IE 8]>
+<script src='/js/chartjs/excanvas.min.js?v=1423185140'></script>
+<![endif]-->
+<script src='/js/chartjs/chart.line.min.js?v=1423185140'></script>
+<script>
+var isIE = window.browser.isIE();
+jQuery.fn.projectLine = function(setting)
+{
+    var $lines = $(this);
+    if(isIE && window.browser.ie < 9 && $lines.length > 10) return;
+    
+    $lines.each(function()
+    {
+        var $e = $(this);
+        var options = $.extend({values: $e.attr('values')}, $e.data(), setting),
+            height = $e.height() - 4,
+            values = [],
+            maxWidth = $e.width() - 4;
+        var strValues = options.values.split(',');
+        for(var i in strValues)
+        {
+            var v = parseFloat(strValues[i]);
+            if(v != NaN) values.push(v);
+        }
+        
+        var width = Math.min(maxWidth, Math.max(10, values.length*maxWidth/30));
+        var canvas = $e.children('canvas');
+        if(!canvas.length)
+        {
+            $e.append('<canvas class="projectline-canvas"></canvas>');
+            canvas = $e.children('canvas');
+            if(navigator.userAgent.indexOf("MSIE 8.0")>0) G_vmlCanvasManager.initElement(canvas[0]);
+        }
+        canvas.attr('width', width).attr('height',height);
+        $e.data('projectLineChart',new Chart(canvas[0].getContext("2d")).Line({
+            labels : values,
+            datasets: [{
+                fillColor : "rgba(0,0,255,0.25)",
+                strokeColor : "rgba(0,0,255,1)",
+                pointColor : "rgba(255,136,0,1)",
+                pointStrokeColor : "#fff",
+                data : values
+            }]
+        }, {animation: !isIE}));
+    });
+}
+
+$(function(){$('.projectline').projectLine();});
+</script>
+<link rel='stylesheet' href='/theme/default/index.css?v=7.0' type='text/css' media='screen' />
+<div class="row">
+  <div class="col-md-8">
+    <div class='panel panel-block' id='projectbox'>
+<table class='table table-condensed table-hover table-striped table-borderless table-fixed'>
+  <thead>
+    <tr class='text-center'>
+      <th class='w-150px'><div class='text-left'><i class="icon-folder-close-alt icon"></i> 项目名称</div></th>
+      <th>结束日期</th>
+      <th>状态</th>
+      <th>总预计</th>
+      <th>总消耗</th>
+      <th>总剩余</th>
+      <th class='w-150px'>进度</th>
+      <th class='w-100px'>燃尽图</th>
+    </tr>
+  </thead>
+  <tbody>
+          <tr class='text-center'>
+      <td class='text-left'><a href='/index.php?m=project&f=task&project=2' target='' title=3d引擎开发维护>3d引擎开发维护</a>
+</td>
+      <td>2016-03-27</td>
+      <td class='project-wait'>未开始</td>
+      <td>53</td>
+      <td>165</td>
+      <td>48</td>
+      <td class='text-left w-150px'>
+        <img class='progressbar' src='/theme/default/images/main/green.png' alt='' height='16' width='78'>
+        <small>77.5%</small>
+      </td>
+      <td id='spark-0' class='spark text-left pd-0' values=''></td>
+   </tr>
+       <tr class='text-center'>
+      <td class='text-left'><a href='/index.php?m=project&f=task&project=3' target='' title=移动应用>移动应用</a>
+</td>
+      <td>2017-05-04</td>
+      <td class='project-wait'>未开始</td>
+      <td>23698</td>
+      <td>26438</td>
+      <td>11435</td>
+      <td class='text-left w-150px'>
+        <img class='progressbar' src='/theme/default/images/main/green.png' alt='' height='16' width='70'>
+        <small>69.8%</small>
+      </td>
+      <td id='spark-1' class='spark text-left pd-0' values=''></td>
+   </tr>
+     </tbody>
+</table>
+</div>
+<script>
+$(function()
+{
+    var $projectbox = $('#projectbox');
+    var $sparks = $projectbox.find('.spark');
+    $sparks.filter(':lt(6)').addClass('sparked').projectLine();
+    $sparks = $sparks.not(':lt(6)');
+    var rowHeight = $sparks.first().closest('tr').outerHeight() - (window.browser.ie === 8 ? 0.3 : 0);
+
+    var scrollFn = false, scrollStart, i, id, $spark;
+    $projectbox.on('scroll.spark', function(e)
+    {
+        if(!$sparks.length)
+        {
+            $projectbox.off('scroll.spark');
+            return;
+        }
+        if(scrollFn) clearTimeout(scrollFn);
+
+        scrollFn = setTimeout(function()
+        {
+            scrollStart = Math.floor(($projectbox.scrollTop() - 30) / (rowHeight)) + 1;
+            for(i = scrollStart; i <= scrollStart + 7; i++)
+            {
+                id = '#spark-' + i;
+                $spark = $(id);
+                if($spark.hasClass('sparked')) continue;
+                $spark.addClass('sparked').projectLine();
+                $sparks = $sparks.not(id);
+            }
+        },100);
+    });
+});
+</script>
+    <div class='panel panel-block' id='productbox'>
+<div class='panel-heading'>
+  <i class='icon-cube icon'></i> <strong>产品</strong>
+</div>
+<div class='panel-body text-center'><br><br>
+  <a href='/index.php?m=product&f=create' target='' class='btn btn-primary'><i class='icon-plus'></i> 创建一个产品</a>
+ &nbsp; &nbsp;  <i class='icon-question-sign text-muted'></i> <a href='http://www.zentao.net/help-read-79236.html' target='_blank'>帮助文档</a></div>
+</div>
+  </div>
+  <div class="col-md-4">
+    <div class='panel panel-block dynamic'>
+  <div class='panel-heading'>
+    <i class='icon-volume-up'></i> <strong>最新动态</strong>
+    <div class="panel-actions pull-right"><a href='/index.php?m=company&f=dynamic' target='' >更多&nbsp;<i class='icon-th icon icon-double-angle-right'></i></a>
+</div>
+  </div>
+  <table class='table table-condensed table-hover table-striped table-borderless table-fixed'>
+    <tr><td class='nobr' width='100%'>10月23日 17:29, 阳进 <em>登录系统</em>  <a href='/index.php?m=user&f=view&account=35'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 16:58, 阳进 <em>登录系统</em>  <a href='/index.php?m=user&f=view&account=35'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 16:51, 阳进 <em>登录系统</em>  <a href='/index.php?m=user&f=view&account=35'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 16:51, 阳进 <em>退出登录</em>  <a href='/index.php?m=user&f=view&account=35'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 16:16, 周健彬 <em>登录系统</em>  <a href='/index.php?m=user&f=view&account=10'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 15:39, 周晓明 <em>登录系统</em>  <a href='/index.php?m=user&f=view&account=3'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 15:09, 阳进 <em>登录系统</em>  <a href='/index.php?m=user&f=view&account=35'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 15:08, 阳进 <em>登录系统</em>  <a href='/index.php?m=user&f=view&account=35'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 14:04, 英坤 <em>登录系统</em>  <a href='/index.php?m=user&f=view&account=48'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 09:45, 晓鹏 <em>退出登录</em>  <a href='/index.php?m=user&f=view&account=37'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 09:45, 晓鹏 <em>评论了</em> 任务 <a href='/index.php?m=task&f=view&taskID=854'>外网再搭一套完全独立的android打包平台</a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 09:44, 晓鹏 <em>完成了</em> 任务 <a href='/index.php?m=task&f=view&taskID=887'>邑世 IOS 更新</a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 09:43, 晓鹏 <em>登录系统</em>  <a href='/index.php?m=user&f=view&account=37'></a>。</td></tr><tr><td class='nobr' width='100%'>10月23日 09:33, 远鹏 <em>完成了</em> 任务 <a href='/index.php?m=task&f=view&taskID=676'>T3越南android SDK接入</a>。</td></tr>  </table>
+</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4 col-sm-6">
+    <div class="panel panel-block">
+  <div class="panel-heading">
+    <i class='icon icon-list-ul'></i> <strong>我的待办</strong>
+    <div class="panel-actions pull-right">
+      <a href='/index.php?m=my&f=todo' >更多 <i class='icon icon-double-angle-right'></i></a>
+    </div>
+  </div>
+  <table class='table table-condensed table-hover table-striped table-borderless table-fixed'>
+    </table>
+</div>
+  </div>
+    <div class="col-md-4 col-sm-6">
+    <div class='panel panel-block'>
+  <div class='panel-heading'>
+    <i class='icon icon-tasks'></i> <strong>我的任务</strong>
+    <div class='panel-actions pull-right'>
+      <a href='/index.php?m=my&f=task' >更多 <i class='icon icon-double-angle-right'></i></a>
+    </div>
+  </div>
+  <table class='table table-condensed table-hover table-striped table-borderless table-fixed'>
+  <tr><td class='nobr'>#889 <a href='/index.php?m=task&f=view&id=889' target='' title=IOS打包平台，新增Xcode9打包>IOS打包平台，新增Xcode9打包</a>
+</td><td width='5'></td></tr><tr><td class='nobr'>#876 <a href='/index.php?m=task&f=view&id=876' target='' title=多台 Ios 打包平台 同步代码>多台 Ios 打包平台 同步代码</a>
+</td><td width='5'></td></tr><tr><td class='nobr'>#857 <a href='/index.php?m=task&f=view&id=857' target='' title=ios混淆提包  单独指定打包页面>ios混淆提包  单独指定打包页面</a>
+</td><td width='5'></td></tr><tr><td class='nobr'>#851 <a href='/index.php?m=task&f=view&id=851' target='' title=ios 打包平台 集成 testFlight >ios 打包平台 集成 testFlight </a>
+</td><td width='5'></td></tr><tr><td class='nobr'>#848 <a href='/index.php?m=task&f=view&id=848' target='' title=iOS   打包平台集成 混淆 功能>iOS   打包平台集成 混淆 功能</a>
+</td><td width='5'></td></tr><tr><td class='nobr'>#844 <a href='/index.php?m=task&f=view&id=844' target='' title=值尚-安智 Android sdk S5 接入>值尚-安智 Android sdk S5 接入</a>
+</td><td width='5'></td></tr><tr><td class='nobr'>#843 <a href='/index.php?m=task&f=view&id=843' target='' title=37376 S3 ios sdk 更新>37376 S3 ios sdk 更新</a>
+</td><td width='5'></td></tr><tr><td class='nobr'>#842 <a href='/index.php?m=task&f=view&id=842' target='' title=T3 越南 ios 更新>T3 越南 ios 更新</a>
+</td><td width='5'></td></tr><tr><td class='nobr'>#833 <a href='/index.php?m=task&f=view&id=833' target='' title=OC 源码 文件 自动生成脚本>OC 源码 文件 自动生成脚本</a>
+</td><td width='5'></td></tr><tr><td class='nobr'>#832 <a href='/index.php?m=task&f=view&id=832' target='' title=IOS 提包 代码混淆策略>IOS 提包 代码混淆策略</a>
+</td><td width='5'></td></tr>  </table>
+</div>
+  </div>
+  <div class="col-md-4 col-sm-6">
+    <div class='panel panel-block'>
+  <div class='panel-heading'>
+    <i class='icon icon-bug'></i> <strong>我的Bug</strong>
+    <div class='panel-actions pull-right'>
+      <a href='/index.php?m=my&f=bug' >更多&nbsp;<i class='icon icon-double-angle-right'></i></a>
+    </div>
+  </div>
+  <table class='table table-condensed table-hover table-striped table-borderless table-fixed'>
+    </table>
+</div>
+  </div>
+  </div>
+  </div>  <script>setTreeBox()</script>
+    
+  <div id='divider'></div>
+  <iframe frameborder='0' name='hiddenwin' id='hiddenwin' scrolling='no' class='debugwin hidden'></iframe>
+</div><div id='footer'>
+  <div id="crumbs">
+    <a href='/index.php?m=my&f=index' >禅道</a>
+&nbsp;<i class="icon-angle-right"></i>&nbsp;<a href='/index.php?m=my&f=index' ><i class="icon-home"></i><span> 我的地盘</span></a>
+  </div>
+  <div id="poweredby">
+  <a href='http://www.zentao.net' target='_blank' class='text-primary'><i class='icon-zentao'></i> 禅道7.0</a> &nbsp;
+    <a href='http://api.zentao.net/goto.php?item=proversion&from=footer' target='_blank' id='proLink' class='text-important'><i class='text-danger icon-reply icon-rotate-90'></i> 专业版！</a> &nbsp;         <a href='javascript:;' target='' class='qrCode ' id='qrcodeBtn' title='手机访问'><i class='icon-qrcode'></i></a>
+<div class='popover top' id='qrcodePopover'><div class='arrow'></div><h3 class='popover-title'>手机访问</h3><div class='popover-content'><img src="javascript:;"></div></div><script>$(function(){$("#qrcodeBtn").click(function(){$("#qrcodePopover").toggleClass("show");}); $("#wrap").click(function(){$("#qrcodePopover").removeClass("show");});});</script><script>$(function(){$("#qrcodeBtn").hover(function(){$(".popover-content img").attr("src", "/index.php?m=misc&f=qrCode");});});</script>  </div>
+</div>
+<script>onlybody = "no"
+</script>
+<script>$(function() 
+{
+    var sp = $('#submenuprofile'), scp = $('#submenuchangePassword');
+    var sign = config.requestType == 'GET' ? '&' : '?';
+    sp.attr('href', sp.attr('href')   + sign + 'onlybody=yes').modalTrigger({width:600, type:'iframe'});
+    scp.attr('href', scp.attr('href') + sign + 'onlybody=yes').modalTrigger({width:500, type:'iframe'});
+});
+$(function() 
+{ 
+    /* Set the heights of every block to keep them same height. */
+    projectBoxHeight = $('#projectbox').height();
+    productBoxHeight = $('#productbox').height();
+    if(projectBoxHeight < 180) $('#projectbox').css('height', 180);
+    if(productBoxHeight < 180) $('#productbox').css('height', 180);
+
+    row2Height = $('#row2').height() - 10;
+    row2Height = row2Height > 200 ? row2Height : 200;
+    $('#row2 .block').each(function(){$(this).css('height', row2Height);})
+});
+
+</script>
+</body>
+</html>
+  

@@ -1,0 +1,20 @@
+scrapy 调试
+
+1、scrapy shell 调试
+
+  scrape shell url
+  即可进入调试窗口，单行执行response.xpath/css 调试xpath或css命令的结果
+
+2、使用pycharm调试scrapy
+  写一个py脚本，如：run.py 内容如下
+  
+  from scrapy import cmdline
+
+  name = 'jobbole'
+
+  cmd = 'scrapy crawl {0}'.format(name)
+
+  cmdline.execute(cmd.split())
+
+  这个时候，你可以在任意位置打上断点，然后Debug运行run.py这个脚本。
+  注意：name 是你的爬虫脚本里的name。

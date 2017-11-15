@@ -1,0 +1,12 @@
+Python 文件读写方式 open 和 codecs.open
+
+1、open 方式是系统自带的。
+  open方式写入的内容必须是 str 类型，即是 ascii 编码内容。
+
+2、codecs 方式是需要导入import codecs
+    import codecs
+    fw = codecs.open(‘text.txt’, ‘a’, ‘utf-8’)
+   这种方法可以指定一个编码打开文件，使用这个方法打开的文件读取返回的将是unicode。写入时，如果参数 是unicode，则使用open()时指定的编码进行编码后写入；如果是str，则先根据源代码文件声明的字符编码，解码成unicode后再进行前述 操作。相对内置的open()来说，这个方法比较不容易在编码上出现问题。。
+
+
+总结：最好使用第二种方式。codecs不容易出现编码问题。

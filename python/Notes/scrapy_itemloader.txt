@@ -1,0 +1,19 @@
+scrapy itemloader 提供数据处理函数
+
+    from scrapy.loader import ItemLoader
+    from scrapy.loader.processors import MapCompose, TakeFirst, Join
+
+    #统一默认提取list的第一个元素
+    class ArticleItemLoader(ItemLoader):
+        #自定义itemloader
+        default_output_processor = TakeFirst()
+    
+    #单个元素的自定义函数，可覆盖默认函数
+    tags = scrapy.Field(
+        input_processor=MapCompose(remove_comment_tags),
+        output_processor=Join(",")
+    )  
+
+    可以对字段添加前置处理和后置处理。
+    大大方便了后期的维护，只需要改想应的处理函数即可。
+    不用一个个变量的直接改。  

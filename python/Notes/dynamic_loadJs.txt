@@ -1,0 +1,13 @@
+question:
+<a href="javascript:void(0);"  class="login" id="user_btn" tabindex="3">登 录</a>
+这个本来是用来登录的，即点击登录按钮之后，应进行相应的操作——验证密码，然后跳转到相应页面，但是这个是怎么实现的呢？
+它到底是怎么去拿到外部相应的外部javascript中去执行呢？
+
+answer:
+$("#user_btn").click(function(){
+  ....$.get(ajax)....
+})
+//了解一下jquery与ajax
+
+
+http://bbs.csdn.net/topics/390314721

@@ -1,0 +1,35 @@
+一、scrapy pipeline启用
+
+1、通过settings.py 里设置启用pipeline
+   如:
+   ITEM_PIPELINES = {
+   'AticleSpider.pipelines.AticlespiderPipeline': 300,
+   }
+   默认时注释的，要启用，则解除注释。
+
+2、自己定制pipeline处理类。
+   在pipelines.py里定制pipe处理类，然后重写相应函数。
+  也需要在settings.py 加上声明，才能真正启用。
+
+
+二、使用scrapy的ImagesPipeline爬取图片的时候，运行报错
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/usr/local/lib/python3.6/site-packages/scrapy/pipelines/media.py", line 79, in process_item
+    requests = arg_to_iter(self.get_media_requests(item, info))
+  File "/usr/local/lib/python3.6/site-packages/scrapy/pipelines/images.py", line 152, in get_media_requests
+    return [Request(x) for x in item.get(self.images_urls_field, [])]
+  File "/usr/local/lib/python3.6/site-packages/scrapy/pipelines/images.py", line 152, in <listcomp>
+    return [Request(x) for x in item.get(self.images_urls_field, [])]
+  File "/usr/local/lib/python3.6/site-packages/scrapy/http/request/__init__.py", line 25, in __init__
+    self._set_url(url)
+  File "/usr/local/lib/python3.6/site-packages/scrapy/http/request/__init__.py", line 58, in _set_url
+    raise ValueError('Missing scheme in request url: %s' % self._url)
+ValueError: Missing scheme in request url: h
+
+查找了相关的文档，了解到使用ImagesPipeline传入的url地址必须是一个list，在传入一个list的时候pipeline处理的速度要快得多，而我写的是一个字符串，所以报错，所以我们需要修改一下传入的url格式就行了
+
+
+
