@@ -52,7 +52,9 @@ MySQL 高级用法
   ALTER TABLE person DROP COLUMN birthday;
   添加列
   ALTER TABLE person ADD COLUMN birthday datetime; 
-  修改列 类型为 bigint 名称为id
-  ALTER TABLE person MODIFY number id BIGINT NOT NULL;
+  修改列 类型为 bigint 
+  ALTER TABLE person MODIFY number BIGINT NOT NULL;
+  修改列名
+  ALTER TABLE person CHANGE number id BIGINT;
   添加主键
   ALTER TABLE person ADD PRIMARY KEY (id);
