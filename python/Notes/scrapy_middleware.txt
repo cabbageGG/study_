@@ -1,0 +1,14 @@
+一、scrapy middlewares 中间件
+
+作用：
+1、用于随机切换user-agent
+2、用于随机ip代理
+3、待续。。。。
+
+
+
+
+
+
+
+
