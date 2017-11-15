@@ -35,7 +35,7 @@ class ZhihuSpider(scrapy.Spider):
         all_urls = [parse.urljoin(response.url, url) for url in all_urls]
         all_urls = filter(lambda x:True if x.startswith("https") else False, all_urls)
         for url in all_urls:
-            match_obj = re.match("(.*zhihu.com/question/(\d+))(/|$).*", url)  #这个url 的正则？
+            match_obj = re.match("(.*zhihu.com/question/(\d+))(/|$).*", url)  #这个url 的正则？ (/|$) 表示'/' 或 '$'
             if match_obj:
                 #如果提取到question相关的页面则下载后交由提取函数进行提取
                 request_url = match_obj.group(1)
