@@ -58,3 +58,6 @@ MySQL 高级用法
   ALTER TABLE person CHANGE number id BIGINT;
   添加主键
   ALTER TABLE person ADD PRIMARY KEY (id);
+
+3、随机取出一条数据
+ select * from table name where condition order by rand() limit 1;
