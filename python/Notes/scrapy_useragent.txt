@@ -1,0 +1,19 @@
+一、scrapy user-agent 设置
+
+默认的设置流程是在start_request后，会进入到默认的user-agent middleware : UserAgentMiddleware 这个类里会实现设置user-agent。从setting里读取USER_AGENT， 如果没有则设置为 scrapy。
+
+如果我们需要动态设置这个user-agent，则需要重新写一个middleware class。
+此时注意需要关掉默认的UserAgentMiddleware，可以在setting里设置 优先级为None
+DOWNLOADER_MIDDLEWARES = {
+   'AticleSpider.middlewares.RandomUserAgentMiddlware': 543,
+   'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+}
+
+
+
+
+
+
+
+
+
