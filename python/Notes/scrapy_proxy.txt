@@ -1,0 +1,21 @@
+一、scrapy proxy 设置
+
+在scrapy 中设置proxy 代理
+
+其实在scrapy文档中有说明，在middleware中间件里的，对request加上meta[“proxy”]变量即可。
+
+eg：request.meta[“proxy”] = “http://{0}:{1}”.format(ip, port)
+
+
+动态ip
+
+每次取动态的IP即可。
+
+
+
+
+
+
+
+
+
