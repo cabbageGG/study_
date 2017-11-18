@@ -1,0 +1,30 @@
+在一台新Mac上部署scrapy-reids project
+
+0、创建虚拟环境
+  sudo easy_install pip
+  sudo pip install virtualenv
+
+1、demo环境
+  Python2虚拟环境 
+	virtualenv -p /usr/bin/python2.7 python2
+  进入虚拟环境安装依赖包
+  	pip 安装 scrapy scrapy-redis mysqlclient fake-useragent
+	sudo pip install -i https://pypi.douban.com/simple/ scrapy scrapy-redis mysqlclient fake-useragent 
+  工程以jobbole为例
+
+2、使用mysql存储的话，需要查看mysql命令
+   
+问题：
+1、  mysqlclient 报错 mysql_config not find
+    解决办法：打开终端输入以下命令，导入mysql_config路径到系统路径
+    export PATH=$PATH:/usr/local/mysql/bin/
+
+
+
+
+
+
+
+
+
+
