@@ -1,0 +1,37 @@
+elasticsearch 环境搭建
+
+1、elasticsearch 是一个强大的搜索引擎
+
+2、安装
+  我们使用github上一位牛人集成了很多插件版本的elasticsearch —— elsticsearch-rtf 。
+  Clone 下来即可在bin目录下执行elasticsearch 运行。
+
+3、查看本地9200端口。
+  出现如下样式的json表示成功
+  {
+  "name" : "Y99ajh3",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "W44nqCgARligbQT8CfCJ6A",
+  "version" : {
+    "number" : "5.1.1",
+    "build_hash" : "5395e21",
+    "build_date" : "2016-12-06T12:36:15.409Z",
+    "build_snapshot" : false,
+    "lucene_version" : "6.3.0"
+    },
+  "tagline" : "You Know, for Search"
+ }
+
+4、集成elasticsearch-head 插件
+  这个插件的作用是让elasticsearch 可视化。
+  github 搜索 elasticsearch-head，克隆安装
+
+  注：需要安装nodejs，这样才能使用npm命令安装。可以进一步安装cnpm，加速npm命令。
+
+5、使用kibana网页命令窗口，来与elasticsearch 交互。开发使用。
+  Kibana 官网下载对应elasticsearch 版本的 kibana。 
+  安装，使用即可。
+
+至此，elasticsearch 本地环境搭建成功。
+   
+ 
