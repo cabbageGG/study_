@@ -28,6 +28,14 @@ elasticsearch 环境搭建
 
   注：需要安装nodejs，这样才能使用npm命令安装。可以进一步安装cnpm，加速npm命令。
 
+  补充：要使用elasticsearch-head可视化elasticsearch 需要在elasticsearch的config配置里的
+      elasticsearch.yml配置文件末尾加上如下配置
+          http.cors.enabled: true
+          http.cors.allow-origin: "*"
+          http.cors.allow-methods: OPTIONS,HEAD,GET,POST,PUT,DELETE
+          http.cors.allow-headers: "X-Requested-With,Content-Type,Content-Length,X-User"
+
+
 5、使用kibana网页命令窗口，来与elasticsearch 交互。开发使用。
   Kibana 官网下载对应elasticsearch 版本的 kibana。 
   安装，使用即可。
