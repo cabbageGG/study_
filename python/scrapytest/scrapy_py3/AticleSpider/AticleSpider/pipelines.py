@@ -11,7 +11,6 @@ import codecs
 from scrapy.exporters import JsonItemExporter
 from twisted.enterprise import adbapi
 
-
 class AticlespiderPipeline(object):
     def process_item(self, item, spider):
         return item
@@ -105,6 +104,14 @@ class MysqlTwistedPipline(object):
         #根据不同的item 构建不同的sql语句并插入到mysql中
         insert_sql, params = item.get_insert_sql()
         cursor.execute(insert_sql, params)
+
+
+class ElasticPipeline(object):
+    #将数据写入elasticsearch
+    def process_item(self, item, spider):
+        #将item转化为es的数据
+        item.save_to_es()
+        return item
 
 
 
