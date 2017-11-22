@@ -1,0 +1,22 @@
+  scrapy 写入数据到elasticsearch
+
+1、原理：同样利用scrapy的pipeline 来实现
+
+2、安装python 操作 elasticserach的库
+ github 上elastic 官方提供了elasticsearch-dsl 包
+ pip insatll elasticsearch-dsl
+
+3、创建elasticsearch 的 pipeline 处理类。
+   主要为：定义并创建 elasticsearch 索引／type／field (也就是数据库／表／列)
+
+ 
+
+
+
+
+
+
+
+
+
+
