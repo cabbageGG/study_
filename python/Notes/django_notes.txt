@@ -1,0 +1,28 @@
+  django 简单使用
+
+1、新建django 项目
+  django-admin startproject projectname
+
+2、启动django项目
+  python manage.py runserver
+
+3、新建app
+  django-admin startapp appname
+  注：需要在project目录下运行
+  新建完app后，需要在settings里加入app声明
+
+4、新建数据表
+   在app里定义了model后，需要在数据库里建表
+   python manage.py migrate   # 创建表结构
+   python manage.py makemigrations TestModel  # 让 Django 知道我们在我们的模型有一些变更
+   python manage.py migrate TestModel   # 创建表结构
+
+
+
+
+
+
+
+
+
+
