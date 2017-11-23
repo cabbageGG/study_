@@ -17,6 +17,41 @@
    python manage.py makemigrations TestModel  # 让 Django 知道我们在我们的模型有一些变更
    python manage.py migrate TestModel   # 创建表结构
 
+5、前端页面使用
+  静态文件存放在static文件夹，如：js,css,image
+  html模版页面存放在templates文件夹，如：*.html。
+  
+  在模版里使用静态文件样例：
+  {% load static %}
+  就可以使用 {% static ‘css/a.css’ %}  来拼接获取静态文件。
+
+  模版使用需要在settings里的Template的dir里加入templates路径。
+
+6、url，view构造
+  构建一个url页面，
+  首先需要定义相应的view，定义过程为声明一个继承View的类，重写里面的get方法，加入后台逻辑。
+  然后需要在urls.py里声明一个url页面，并指定它使用的那个view。
+
+  例子：首页构造
+  Urls.py
+  from search.views import IndexView
+  url(r’^$’, IndexView.as_View(), name=‘index’), 
+  
+  search/view.py
+  from django.shortcuts import render
+  from django.views.generic.base import View
+  class IndexView(View):
+      def get(self, request):
+          return render(request, ‘index.html’)
+
+
+7、前后端数据传递与使用
+   
+   
+  
+  
+  
+  
 
 
 
