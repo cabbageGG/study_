@@ -1,0 +1,9 @@
+1、启动elasticsearch-rtf
+  进入bin，执行./elasticsearch
+
+2、启动elasticsearch-head
+  进入elasticsearch-head 
+  执行 cnpm run start
+   
+3、启动kibana
+  进入bin，执行脚本./kibana
