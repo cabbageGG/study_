@@ -1,0 +1,14 @@
+Git notes
+
+1、更新远程仓库代码到本地
+  git fetch origin master
+  git merge origin master
+
+2、强行合并原称仓库到本地
+  git pull
+
+
+
+
+
+
