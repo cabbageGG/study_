@@ -45,7 +45,23 @@
           return render(request, ‘index.html’)
 
 
-7、前后端数据传递与使用
+7、django前后端数据传递与使用
+   11、怎么把后台的变量传入html的.
+      an: A 这是在urls.py 里定义url时，有声明该url的name属性为suggest，才让前端知道的。
+	     如：url(r'^suggest/$', SuggestView.as_view(), name="suggest")
+                使用： {% url ‘suggest’ %}
+          B 在setting.py 里定义变量也可以使用。不过，应该是固定使用。需要查看文档。
+             如： STATIC_URL = '/static/'
+		STATICFILES_DIRS = [
+    			os.path.join(BASE_DIR, "static")
+		]
+                使用：{% load staticfiles %}
+                     {% static 'css/index.css' %} 这样拼接字符串
+          C 在views.py 里返回前端request结果时，可以附带data，以字典的形式。
+	     如：render(request, “**.html”, {“key_words”:key_words})
+                使用：{{ key_words }}
+   22、后台又时怎么从请求里获取前端传递的参数 如：a = request.GET.get(’s’, ‘’)
+      A: 这是以request.GET参数当作字典来处理的啊！
    
    
   
