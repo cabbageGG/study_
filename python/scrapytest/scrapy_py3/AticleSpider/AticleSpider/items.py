@@ -4,21 +4,24 @@
 #
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/items.html
-import scrapy, re ,datetime
+import scrapy, re ,datetime, redis
 from AticleSpider.utils.common import extract_num
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst, Join
 from AticleSpider.settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
+
 from w3lib.html import remove_tags #这个是干嘛的？ 去掉网页的标签
+from AticleSpider.models.es_types import ArticleType
+
+from elasticsearch_dsl.connections import connections
+es = connections.create_connection(ArticleType._doc_type.using)  #_doc_type.using 这是什么意思？
+
+redis_cli = redis.StrictRedis()
 
 class ArticlespiderItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
-
-
-def add_jobbole(value):
-    return value+"-bobby"
 
 
 def date_convert(value):
@@ -49,6 +52,24 @@ def remove_comment_tags(value):
 
 def return_value(value):
     return value
+
+def gen_suggests(index, info_tuple):
+    #根据字符串生成搜索建议数组
+    used_words = set()
+    suggests = []
+    for text, weight in info_tuple:
+        if text:
+            #调用es的analyze接口分析字符串
+            words = es.indices.analyze(index=index, analyzer="ik_max_word", params={'filter':["lowercase"]}, body=text)
+            anylyzed_words = set([r["token"] for r in words["tokens"] if len(r["token"])>1])
+            new_words = anylyzed_words - used_words
+        else:
+            new_words = set()
+
+        if new_words:
+            suggests.append({"input":list(new_words), "weight":weight})
+
+    return suggests
 
 class JobBoleArticleItemLoader(ItemLoader):
     #自定义itemloader
@@ -89,6 +110,30 @@ class JobBoleArticleItem(scrapy.Item):
         params = (self["url_id"], self["title"], self["front_image_url"], self["content"], self["create_date"],self["fav_nums"],self["praise_nums"],self["comment_nums"],self["tags"],self["url"])
 
         return insert_sql, params
+
+    def save_to_es(self):
+
+        article = ArticleType()
+        article.title = self['title']
+        article.create_date = self["create_date"]
+        article.content = remove_tags(self["content"])
+        article.front_image_url = self["front_image_url"]
+        if "front_image_path" in self:
+            article.front_image_path = self["front_image_path"]
+        article.praise_nums = self["praise_nums"]
+        article.fav_nums = self["fav_nums"]
+        article.comment_nums = self["comment_nums"]
+        article.url = self["url"]
+        article.tags = self["tags"]
+        article.meta.id = self["url_id"]
+
+        article.suggest = gen_suggests(ArticleType._doc_type.index, ((article.title,10),(article.tags, 7)))
+
+        article.save()
+
+        redis_cli.incr("jobbole_count")
+
+        pass
 
 class baikeItemLoader(ItemLoader):
     #自定义itemloader
@@ -247,7 +292,7 @@ class LagouJobItem(scrapy.Item):
             self["work_years"], self["degree_need"], self["job_type"],
             self["publish_time"], self["job_advantage"], self["job_desc"],
             self["job_addr"], self["company_name"], self["company_url"],
-            self["job_addr"], self["crawl_time"].strftime(SQL_DATETIME_FORMAT),
+            self["tags"], self["crawl_time"].strftime(SQL_DATETIME_FORMAT),
         )
 
         return insert_sql, params
