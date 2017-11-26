@@ -495,3 +495,60 @@ GET test/test1/_search
     }
   }
 }
+
+
+#analyze api
+GET _analyze
+{
+  "analyzer": "ik_max_word",
+  "text": "pythonÅÀ³æ¹¤³ÌÊ¦ "
+}
+GET _analyze
+{
+  "analyzer": "ik_max_word",
+  "text": "python spider system"
+}
+
+
+#suggest 
+#fuzzy:allow modify times to match key_word
+#eg: linnx -> linux fuzzy:1 
+GET jobbole/article/_search
+{
+  "_source":[ "suggest","title"],
+  "suggest":{
+    "my_suggest" : {
+        "prefix" : "linux", 
+        "completion" : { 
+            "field" : "suggest" ,
+            "fuzzy":{ "fuzziness":2 }, 
+            "size":10
+        }
+    }
+  }
+}
+
+#search
+#highlight 
+#can add some midification to key_word
+#eg:pre_tags,post_tags
+GET jobbole/_search
+{
+  "_source":["title"],
+  "query":{
+      "multi_match":{
+          "query":"linux",
+          "fields":["tags", "title", "content"]
+      }
+  },
+  "from":0,
+  "size":10,
+  "highlight": {
+      "pre_tags": ["<span class='linux'>"],
+      "post_tags": ["</span>"],
+      "fields": {
+          "title": {},
+          "content": {}
+      }
+  }
+}
