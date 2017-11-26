@@ -11,11 +11,12 @@ from scrapy.loader.processors import MapCompose, TakeFirst, Join
 from AticleSpider.settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
 
 from w3lib.html import remove_tags #这个是干嘛的？ 去掉网页的标签
-from AticleSpider.models.es_types import ArticleType, JobType
+from AticleSpider.models.es_types import ArticleType, JobType, QuestionType, AnswerType
 
 from elasticsearch_dsl.connections import connections
-#es = connections.create_connection(ArticleType._doc_type.using)  #_doc_type.using 这是什么意思？ a: 动态指向当前表吧
-es = connections.create_connection(JobType._doc_type.using)
+#es = connections.create_connection(ArticleType._doc_type.using)  #_doc_type.using 这是什么意思？ a: 动态指向当前表吧  这里需要研究下怎么个动态法??
+#es = connections.create_connection(JobType._doc_type.using)
+es = connections.create_connection(QuestionType._doc_type.using)
 
 redis_cli = redis.StrictRedis()
 
@@ -201,6 +202,45 @@ class ZhihuQuestionItem(scrapy.Item):
 
         return insert_sql, params
 
+    def save_to_es(self):
+
+        zhihu_id = self["zhihu_id"][0]
+        topics = ",".join(self["topics"])
+        url = self["url"][0]
+        title = "".join(self["title"])
+        content = "".join(self["content"])
+        answer_num = extract_num("".join(self["answer_num"]))
+        comments_num = extract_num("".join(self["comments_num"]))
+
+        if len(self["watch_user_num"]) == 2:
+            watch_user_num = int(self["watch_user_num"][0])
+            click_num = int(self["watch_user_num"][1])
+        else:
+            watch_user_num = int(self["watch_user_num"][0])
+            click_num = 0
+
+        crawl_time = datetime.datetime.now().strftime(SQL_DATETIME_FORMAT)
+
+        question = QuestionType()
+        question.zhihu_id = zhihu_id
+        question.topics = topics
+        question.url = url
+        question.title = title
+        question.content = remove_tags(content)
+        question.answer_num = answer_num
+        question.comments_num = comments_num
+        question.watch_user_num = watch_user_num
+        question.click_num = click_num
+        question.crawl_time = crawl_time
+
+        question.suggest = gen_suggests(QuestionType._doc_type.index, ((question.title,10),(question.topics, 7)))
+
+        question.save()
+
+        redis_cli.incr("zhihu_count")
+
+        pass
+
 
 class ZhihuAnswerItem(scrapy.Item):
     #知乎的问题回答item
@@ -211,7 +251,7 @@ class ZhihuAnswerItem(scrapy.Item):
     content = scrapy.Field()
     parise_num = scrapy.Field()
     comments_num = scrapy.Field()
-    create_time = scrapy.Field()
+    create_date = scrapy.Field()
     update_time = scrapy.Field()
     crawl_time = scrapy.Field()
 
@@ -225,17 +265,41 @@ class ZhihuAnswerItem(scrapy.Item):
               update_time=VALUES(update_time)
         """
 
-        create_time = datetime.datetime.fromtimestamp(self["create_time"]).strftime(SQL_DATETIME_FORMAT)
+        create_date = datetime.datetime.fromtimestamp(self["create_date"]).strftime(SQL_DATETIME_FORMAT)
         update_time = datetime.datetime.fromtimestamp(self["update_time"]).strftime(SQL_DATETIME_FORMAT)
         params = (
             self["zhihu_id"], self["url"], self["question_id"],
             self["author_id"], self["content"], self["parise_num"],
-            self["comments_num"], create_time, update_time,
+            self["comments_num"], create_date, update_time,
             self["crawl_time"].strftime(SQL_DATETIME_FORMAT),
         )
 
         return insert_sql, params
 
+    # def save_to_es(self):
+    #
+    #     create_date = datetime.datetime.fromtimestamp(self["create_date"]).strftime(SQL_DATETIME_FORMAT)
+    #     update_time = datetime.datetime.fromtimestamp(self["update_time"]).strftime(SQL_DATETIME_FORMAT)
+    #
+    #     answer = AnswerType()
+    #     answer.zhihu_id = self["zhihu_id"]
+    #     answer.url = self["url"]
+    #     answer.question_id = self["question_id"]
+    #     answer.author_id = self["author_id"]
+    #     answer.content = self["content"]
+    #     answer.parise_num = self["parise_num"]
+    #     answer.comments_num = self["comments_num"]
+    #     answer.create_date = create_date
+    #     answer.update_time = update_time
+    #     answer.crawl_time = self["crawl_time"]
+    #
+    #     answer.suggest = gen_suggests(AnswerType._doc_type.index, ((answer.title,10),(answer.topics, 7)))
+    #
+    #     answer.save()
+    #
+    #     redis_cli.incr("zhihuA_count")
+    #
+    #     pass
 
 
 def remove_splash(value):

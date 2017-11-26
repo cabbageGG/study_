@@ -65,8 +65,45 @@ class JobType(DocType):
         index = "lagou"
         doc_type = "job"
 
+class QuestionType(DocType):
+    #知乎问题
+    suggest = Completion(analyzer=ik_analyzer)
+    zhihu_id = Text(analyzer="ik_max_word")
+    topics = Text(analyzer="ik_max_word")
+    url = Keyword()
+    title = Text(analyzer="ik_max_word")
+    content = Text(analyzer="ik_max_word")
+    answer_num = Integer()
+    comments_num = Integer()
+    watch_user_num = Integer()
+    click_num = Integer()
+    crawl_time = Date()
+
+    class Meta:
+        index = "zhihu"
+        doc_type = "question"
+
+class AnswerType(DocType):
+    #知乎回答
+    suggest = Completion(analyzer=ik_analyzer)
+    zhihu_id = Text(analyzer="ik_max_word")
+    question_id = Text(analyzer="ik_max_word")
+    url = Keyword()
+    author_id = Text(analyzer="ik_max_word")
+    content = Text(analyzer="ik_max_word")
+    parise_num = Integer()
+    comments_num = Integer()
+    create_date = Date()
+    update_time = Date()
+    crawl_time = Date()
+
+    class Meta:
+        index = "zhihu"
+        doc_type = "answer"
+
 if __name__ == "__main__":
-    JobType.init()
+    QuestionType.init()
+    AnswerType.init()
 
 
 
