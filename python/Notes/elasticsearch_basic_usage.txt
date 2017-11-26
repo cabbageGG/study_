@@ -1,0 +1,497 @@
+#es basic commands CRUD
+
+
+# create index 
+PUT lagou
+{
+  "settings": {
+    "index":{
+      "number_of_shards":5,
+      "number_of_replicas":1
+    }
+  }
+}
+
+
+#insert docu --auto mapping if not mapping
+POST lagou/job/1
+{
+  "title":"python",
+  "salary":10000,
+  "company":{
+    "name":"baidu"
+  }
+}
+#insert docu --auto id if not id but use post 
+POST lagou/job/
+{
+  "title":"java",
+  "salary":10000,
+  "company":{
+    "name":"baidu"
+  }
+}
+
+
+#query
+GET lagou
+GET _all
+GET lagou/_settings
+GET lagou/_mapping
+GET lagou/
+#select * from job where id = 1;
+#contents in the _source part
+GET lagou/job/1
+#select title from job where id = 1;
+GET lagou/job/1?_source=title
+#select title,salary from job where id = 1;
+GET lagou/job/1?_source=title,salary
+
+
+
+#update
+PUT lagou/_settings
+{
+  "number_of_replicas": 1
+}
+#update docu -- PUT totally override
+PUT lagou/job/1
+{
+  "title":"java",
+  "salary":20000,
+  "company":{
+    "name":"meituan"
+  }
+}
+#update common method
+POST lagou/job/1/_update
+{
+  "doc":{
+      "salary":16000
+  }
+}
+
+
+
+#delete --only can delete row and database
+DELETE lagou/job/1
+DELETE lagou
+
+
+
+
+#es muti commands
+#mget and bulk
+GET _mget
+{
+  "docs":[
+    {
+      "_index":"lagou",
+      "_type":"job1",
+      "_id":1
+    },
+    {
+      "_index":"lagou",
+      "_type":"job2",
+      "_id":1
+    }
+    ]
+}
+GET lagou/_mget
+{
+  "docs":[
+    {
+      "_type":"job1",
+      "_id":1
+    },
+    {
+      "_type":"job2",
+      "_id":1
+    }
+    ]
+}
+GET lagou/job1/_mget
+{
+  "docs":[
+    {
+      "_id":1
+    },
+    {
+      "_id":2
+    }
+    ]
+}
+GET lagou/job1/_mget
+{
+    "ids":[1,2]
+}
+
+#bulk --index,delete,update,create
+#{"index":{"_index":"lagou","_type":"job","_id":"2"}}
+#{"field":"value"}
+#{"delete":{"_index":"lagou","_type":"job","_id":"2"}}
+#{"update":{"_index":"lagou","_type":"job","_id":"2"}}
+#{"doc":{"field":"value"}}
+#{"create":{"_index":"lagou","_type":"job","_id":"2"}}
+#{"field":"value"}
+#action_and_meta_data\n
+#optional_source\n
+#...
+#action_and_meta_data\n
+#optional_source\n
+POST _bulk
+{"create":{"_index":"lagou","_type":"job5","_id":"1"}}
+{"title":"linux1","salary":"12000"}
+{"index":{"_index":"lagou","_type":"job6","_id":"1"}}
+{"title":"linux1","salary":"12000"}
+
+
+
+
+
+#mapping
+#string: text,keywords *****
+#int: long,integer,short,byte,double,float ***
+#date: date
+#bool: boolean
+#binary: binary
+#other: object({}),nest([{},{}]) ****
+#geo: geo-point,geo-shape
+#feature: ip,competion
+PUT test
+{
+  "mappings": {
+    "job":{
+      "properties": {
+        "title":{
+          "type":"keyword"
+        },
+        "salary":{
+          "type": "integer"
+        },
+        "company":{
+          "properties": {
+            "name":{
+              "type":"text"
+            }
+          }
+        },
+        "time":{
+          "type": "date",
+          "format":"yyyy-MM-dd"
+        }
+      }
+    }
+  }
+}
+#if define mapping, then the field-value must be the mapping type or donot have the field 
+POST test/job/3
+{
+  "title":"python",
+  "salary":120,
+  "company":{
+    "name":"qq"
+  },
+  "ttt":"java3"
+}
+POST test/job/4
+{
+  "title":"python",
+  "salary":120,
+  "company":{
+    "name":"qq"
+  },
+  "ttt":"python打造推荐引擎系统"
+}
+#if define mapping, it can not be modify but can add new field
+POST test/job/_mapping
+{
+  "properties": {
+    "title":{
+      "type":"keyword"
+    },
+    "salary":{
+      "type": "integer"
+    },
+    "company":{
+      "properties": {
+        "name":{
+          "type":"text"
+        }
+      }
+    },
+    "time":{
+      "type": "date",
+      "format":"yyyy-MM-dd"
+    },
+    "add":{
+      "type":"text"
+    },
+    "ttt":{
+      "type": "text",
+      "analyzer": "ik_max_word"
+      
+    }
+  }
+}
+
+
+
+#es basic query
+
+#match                            *****
+#if title has analyzer=ik_max_word
+#then title will be spliced , every part match
+#will return true
+#else will match the whole word
+GET test/job/_search
+{
+  "query":{
+    "match":{
+      "ttt":"java2"
+    }
+  }
+}
+
+#term
+#cannot use analyzer. whole word match
+GET test/_search  **
+{
+  "query":{
+    "term":{
+      "ttt":"java2"
+    }
+  }
+}
+
+#terms                             *****
+#one in list that match then return true
+GET test/_search  
+{
+  "query":{
+    "terms":{
+      "ttt":["java2","3"]
+    }
+  }
+}
+
+#limit query results                *****
+GET test/_search 
+{
+  "query":{
+    "terms":{
+      "ttt":["java2","3"]
+    }
+  },
+  "from": 0,
+  "size": 1
+}
+
+#match_all
+#return whole results
+GET test/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+#match_phrase              *****************
+#PhraseQuery
+#slop:Allow automatic completion distance   
+GET test/_search
+{
+  "query": {
+    "match_phrase": {
+      "ttt": {
+        "query": "python系统",
+        "slop":6
+      }
+    }
+  }
+}
+
+#multi_match                ****************
+#eg:can match multi fields
+#such as ttt and title
+#title^3 means three times important
+GET test/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "java2",
+      "fields": ["title^3","ttt"]
+    }
+  }
+}
+
+#stord_fields
+#result only return some fields
+#warning: the field must have (store:true) attribute
+GET test/_search
+{
+  "stored_fields": ["title","ttt"],
+  "query": {
+    "multi_match": {
+      "query": "java2",
+      "fields": ["title^3","ttt"]
+    }
+  }
+}
+
+#sort
+#use sort to sort the results
+#desc and asc
+GET test/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "salary": {
+        "order": "desc"
+      }
+    }
+  ]
+}
+
+#range
+#range query
+GET test/_search
+{
+  "query": {
+    "range": {
+      "salary": {
+        "gte": 10,
+        "lte": 120,
+        "boost": 1
+      }
+    }
+  }
+}
+GET test/_search
+{
+  "query": {
+    "range": {
+      "time": {
+        "gte": "2017-04-01",
+        "lte": "now"
+      }
+    }
+  }
+}
+
+#wildcard query
+GET test/_search
+{
+  "query": {
+    "wildcard": {
+      "title": {
+        "value": "pyth*n",
+        "boost": 2
+      }
+    }
+  }
+}
+
+
+
+
+#bool query            **************************
+#bool:{
+#  "should":[],
+#  "must":[],
+#  "must_not":[],
+#  "filter":[]
+#}
+#[] -- basic query
+#insert datas
+POST test/test1/_bulk
+{"index":{"_id":1}}
+{"salary":10,"title":"Python"}
+{"index":{"_id":2}}
+{"salary":20,"title":"Scrapy"}
+{"index":{"_id":3}}
+{"salary":30,"title":"Django"}
+{"index":{"_id":4}}
+{"salary":40,"title":"ElasticSearch"}
+
+GET test/test1/_mapping
+
+#select * from test1 where salary = 20
+GET test/test1/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"match_all": {}}
+      ],
+      "filter": {"term": {"salary":20}}
+    }
+  }
+}
+
+#select * from test1 where (salary = 10 or title = Django) and (salary != 30)
+GET test/test1/_search
+{
+  "query": {
+   "bool":{
+      "should":[{"term":{"salary":10}},
+              {"term":{"title":"Django"}}
+      ],
+      "must_not": [
+        {"term":{"salary":30}}
+      ]
+    }
+  }
+}
+
+#bool in bool
+#select * from test1 where (salary = 10 and title != Scrapy) or (salary = 30)
+#the outer term is "and" then one bool, the outer term is "or" then maybe two bool.
+#because,one bool is "and" in outer term defaultly
+GET test/test1/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "bool":{
+            "must": [{"term":{"salary":10}}],
+            "must_not": [{"term":{"title":"Scrapy"}}]
+          }
+        },
+        {"term":{"salary":30}}
+      ]
+    }
+  }
+}
+
+#exists
+#query null or not null
+#select * from test1 where salary is nou null
+GET test/test1/_search
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "exists": {
+             "field": "salary"
+         }
+      }
+    }
+  }
+}
+GET test/test1/_search
+{
+  "query": {
+    "bool": {
+      "must_not": {
+        "exists": {
+             "field": "salary"
+         }
+      }
+    }
+  }
+}
