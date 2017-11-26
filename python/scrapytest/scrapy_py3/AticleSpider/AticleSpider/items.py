@@ -11,10 +11,11 @@ from scrapy.loader.processors import MapCompose, TakeFirst, Join
 from AticleSpider.settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
 
 from w3lib.html import remove_tags #这个是干嘛的？ 去掉网页的标签
-from AticleSpider.models.es_types import ArticleType
+from AticleSpider.models.es_types import ArticleType, JobType
 
 from elasticsearch_dsl.connections import connections
-es = connections.create_connection(ArticleType._doc_type.using)  #_doc_type.using 这是什么意思？
+#es = connections.create_connection(ArticleType._doc_type.using)  #_doc_type.using 这是什么意思？ a: 动态指向当前表吧
+es = connections.create_connection(JobType._doc_type.using)
 
 redis_cli = redis.StrictRedis()
 
@@ -296,3 +297,31 @@ class LagouJobItem(scrapy.Item):
         )
 
         return insert_sql, params
+
+    def save_to_es(self):
+
+        job = JobType()
+        job.title = self['title']
+        job.url = self['url']
+        job.salary = self["salary"]
+        job.job_city = self["job_city"]
+        job.work_years = self["work_years"]
+        job.degree_need = self["degree_need"]
+        job.job_type = self["job_type"]
+        job.tags = self["tags"]
+        job.publish_time = self["publish_time"]
+        job.job_advantage = self["job_advantage"]
+        job.job_desc = remove_tags(self["job_desc"])
+        job.job_addr = self["job_addr"]
+        job.company_name = self["company_name"]
+        job.company_url = self["company_url"]
+        job.crawl_time = self["crawl_time"]
+        job.meta.id = self["url_object_id"]
+
+        job.suggest = gen_suggests(JobType._doc_type.index, ((job.title,10),(job.tags, 5)))
+
+        job.save()
+
+        redis_cli.incr("lagou_count")
+
+        pass
