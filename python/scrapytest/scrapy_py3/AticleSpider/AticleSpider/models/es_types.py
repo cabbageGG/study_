@@ -40,8 +40,70 @@ class ArticleType(DocType):
         index = "jobbole"
         doc_type = "article"
 
+
+class JobType(DocType):
+    #拉勾职位类型
+    suggest = Completion(analyzer=ik_analyzer)
+    title = Text(analyzer="ik_max_word")
+    url = Keyword()
+    url_object_id = Keyword()
+    salary = Text(analyzer="ik_max_word")
+    job_city = Keyword()
+    work_years = Text(analyzer="ik_max_word")
+    degree_need = Keyword()
+    job_type = Keyword()
+    tags = Text(analyzer="ik_max_word")
+    publish_time = Keyword()
+    job_advantage = Text(analyzer="ik_max_word")
+    job_desc = Text(analyzer="ik_max_word")
+    job_addr = Text(analyzer="ik_max_word")
+    company_name = Text(analyzer="ik_max_word")
+    company_url = Keyword()
+    crawl_time = Date()
+
+    class Meta:
+        index = "lagou"
+        doc_type = "job"
+
+class QuestionType(DocType):
+    #知乎问题
+    suggest = Completion(analyzer=ik_analyzer)
+    zhihu_id = Text(analyzer="ik_max_word")
+    topics = Text(analyzer="ik_max_word")
+    url = Keyword()
+    title = Text(analyzer="ik_max_word")
+    content = Text(analyzer="ik_max_word")
+    answer_num = Integer()
+    comments_num = Integer()
+    watch_user_num = Integer()
+    click_num = Integer()
+    crawl_time = Date()
+
+    class Meta:
+        index = "zhihu"
+        doc_type = "question"
+
+class AnswerType(DocType):
+    #知乎回答
+    suggest = Completion(analyzer=ik_analyzer)
+    zhihu_id = Text(analyzer="ik_max_word")
+    question_id = Text(analyzer="ik_max_word")
+    url = Keyword()
+    author_id = Text(analyzer="ik_max_word")
+    content = Text(analyzer="ik_max_word")
+    parise_num = Integer()
+    comments_num = Integer()
+    create_date = Date()
+    update_time = Date()
+    crawl_time = Date()
+
+    class Meta:
+        index = "zhihu"
+        doc_type = "answer"
+
 if __name__ == "__main__":
-    ArticleType.init()
+    QuestionType.init()
+    AnswerType.init()
 
 
 

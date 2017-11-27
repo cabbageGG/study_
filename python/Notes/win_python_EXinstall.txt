@@ -1,0 +1,4 @@
+https://www.lfd.uci.edu/~gohlke/pythonlibs/
+
+在win下安装python包时报错，找不到包，需要到上述网址找相应的包。
+

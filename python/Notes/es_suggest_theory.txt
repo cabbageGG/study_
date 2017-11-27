@@ -1,0 +1,11 @@
+1、在创建index时，需要在mapping里加入suggest 这个字段，类型为completion
+    "suggest" : {
+        "type" : "completion"
+    },
+2、在保存数据时，对某些字段进行suggest分词分析。并保存下来。
+    "suggest" : {
+        "input": [ "Nevermind", "Nirvana" ],
+        "weight" : 34
+    }
+    这里的input后面的list就是分词后的结果list
+3、这样在进行这些字段的搜索建议时，可以在保存的input数据里查找。
