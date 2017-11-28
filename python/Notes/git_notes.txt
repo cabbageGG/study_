@@ -7,7 +7,9 @@ Git notes
 2、强行合并原称仓库到本地
   git pull
 
+3、git log 查看log 
 
+4、git diff HEAD^ HEAD FILE 比较上次和上上次提交的差异
 
 
 
