@@ -27,7 +27,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 5
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -52,9 +52,11 @@ ROBOTSTXT_OBEY = False
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'AticleSpider.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   #'AticleSpider.middlewares.SeleniumMiddleware': 1,
+   'AticleSpider.middlewares.RandomUserAgentMiddlware': 543,
+   'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -68,7 +70,8 @@ ITEM_PIPELINES = {
     #'AticleSpider.pipelines.JsonFilePipeline': 1,
     #'AticleSpider.pipelines.mysqlPipeline': 1,
    # 'scrapy.pipelines.images.ImagesPipeline': 1,
-    'AticleSpider.pipelines.MysqlTwistedPipline': 1,
+   #'AticleSpider.pipelines.MysqlTwistedPipline': 1,
+    'AticleSpider.pipelines.ElasticPipeline': 1,
 }
 
 IMAGES_URLS_FIELD='front_image_url'
@@ -104,3 +107,6 @@ MYSQL_PASSWORD='123456'
 
 SQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 SQL_DATE_FORMAT = "%Y-%m-%d"
+
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+RANDOM_UA_TYPE = 'random'
