@@ -1,0 +1,27 @@
+ js modify html table
+
+1、获取到html元素
+  var table = document.getElementById(“id”)
+
+2、获取table的某一行，某一列
+  var row = table.rows[0] //获取第一行
+  var cell = row.cells[0] //获取第一行的第一列
+  cell.innerHTML = “dd” //修改第一行第一列的值
+
+3、往table插入一行
+  var row = table.insertRow(0) //在第一行插入空行
+  var cell = row.cells[0] //获取第一行的第一列
+  cell.innerHTML = “dd” //修改第一行第一列的值  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
