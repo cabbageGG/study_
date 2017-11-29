@@ -83,6 +83,12 @@
   blog.title = newTitle
   blog.content = newContent
   blog.save()//更新某一行数据
+
+10、django url传递参数给view
+  URL可以通过named group方式传递指定参数，
+  语法为： (?P<name>pattern)，name 可以理解为所要传递的参数的名称，pattern代表所要匹配的模式。
+  例如，url(r'^blog/(?P<blog_id>\d+)/$', BlogView.as_view(), name="blog"), 
+  注意这里的（）以及/$。
   
    
    
