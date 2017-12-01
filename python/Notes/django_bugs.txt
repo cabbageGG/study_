@@ -1,0 +1,65 @@
+﻿  django 简单bug记录
+ 
+   今天在使用django搭建博客网站时，碰到405错误。真的是一个大坑！！！
+构造url的相应函数，有两种。
+1、使用官方提供的使用类的声明来写响应事件。
+url(r'^blog_edit/$', BlogSaveView.as_view(), name="blog_edit")
+class BlogSaveView(View):
+    def get(self, request):
+        title = request.POST.get("title","TITLE")
+        content = request.POST.get("content","")
+        blog_id = request.POST.get("blog_id","0")
+        if blog_id == '0':
+            models.Blog.objects.create(titile=title, content=content,create_time=datetime.now())
+            blogs = models.Blog.objects.all()
+            return render(request, "index.html", {"blogs": blogs})
+        blog = models.Blog.objects.get(pk=blog_id)
+        blog.titile = title
+        blog.content = content
+        blog.create_time = datetime.now()
+        blog.save()
+        # return render(request, "blog.html", {"blog": blog})
+        blogs = models.Blog.objects.all()
+        return render(request, "index.html", {"blogs": blogs})
+
+
+2、第二种直接使用函数来构建url响应事件
+url(r'^blog_edit/$',blog.views.edit_action, name="blog_edit")
+def edit_action(request):
+    title = request.POST.get("title", "TITLE")
+    content = request.POST.get("content", "")
+    blog_id = request.POST.get("blog_id", "0")
+    if blog_id == '0':
+        models.Blog.objects.create(titile=title, content=content, create_time=datetime.now())
+        blogs = models.Blog.objects.all()
+        return render(request, "index.html", {"blogs": blogs})
+    blog = models.Blog.objects.get(pk=blog_id)
+    blog.titile = title
+    blog.content = content
+    blog.create_time = datetime.now()
+    blog.save()
+    # return render(request, "blog.html", {"blog": blog})
+    blogs = models.Blog.objects.all()
+    return render(request, "index.html", {"blogs": blogs})
+
+
+结果：两种方式的响应内容是一样的，但是在真正浏览器里访问时。第一种方式，会得到一个405的错误！！！！！
+      建议以后都使用方式二吧。。。
+
+
+
+   
+   
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
