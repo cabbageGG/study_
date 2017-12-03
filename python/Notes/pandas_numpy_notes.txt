@@ -1,0 +1,8 @@
+﻿基本科学计算库的介绍与比较
+
+1、pandas and numpy
+  pandas:dataFrame 优点:数据类型不限，灵活
+                   缺点：通过索引获取数据，大规模需要用for，慢
+
+  numpy:ndarrays   优点：内存优，快速计算，可以矩阵运算
+                   缺点：数据类型单一，大小固定。
