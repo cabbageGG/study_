@@ -37,4 +37,10 @@ print('符合条件的整数有：',t )
 上面这个可以写为如下表达式
 print([n**2-100 for m in range(168) for n in range(m) if(m+n)*(m-n)==168])
 
+3、列表复制
+a = [1,2,3]
+b = a[:]
 
+4、格式化输出当前时间
+import time
+print (time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))

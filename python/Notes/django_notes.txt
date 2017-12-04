@@ -1,4 +1,4 @@
-﻿  django 简单使用
+  django 简单使用
 
 1、新建django 项目
   django-admin startproject projectname
@@ -94,9 +94,18 @@
    a = request.POST.get("key","default value")
   
    
-   
-  
-  
+12、后台管理系统admin
+   1、注册超级用户：python manage.py createsuperuser
+   2、将app的models添加到admin的管理页面：
+      admin.py   
+      from blog.models import Blog, User
+      admin.site.register(Blog)
+      admin.site.register(User)
+   3、设置models的title可见
+      models.py
+      class Blog(models.Model):
+          def __unicode__(self):
+              return self.title 
   
   
 
