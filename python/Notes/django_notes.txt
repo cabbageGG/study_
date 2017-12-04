@@ -106,7 +106,13 @@
       class Blog(models.Model):
           def __unicode__(self):
               return self.title 
-  
+   4、自定义管理界面
+      admin.py
+      class BlogAdmin(admin.ModelAdmin):
+          list_display = ('title', 'create_time')
+          search_fields = ('title', 'create_time')
+
+      admin.site.register(Blog, BlogAdmin)  
   
 
 
