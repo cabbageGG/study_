@@ -27,5 +27,10 @@ Git notes
 8、删除远程某分枝dev
   git push origin :dev
 
+9、本地创建，删除，切换分枝
+  git checkout -b branchname 创建
+  git branch -d branchname 删除
+  git checkout branchname 切换
+  
 
 
