@@ -7,10 +7,25 @@ Git notes
 2、强行合并原称仓库到本地
   git pull
 
-3、git log 查看log 
+3、查看log 
+  git log 
 
-4、git diff HEAD^ HEAD FILE 比较上次和上上次提交的差异
+4、比较上次和上上次提交的差异
+  git diff HEAD^ HEAD FILE 
 
+5、提交该分支到远程仓库
+
+  git push origin dev
+
+6、测试从远程获取dev
+
+  git pull origin dev
+
+7、克隆某一分枝
+  git clone -b branchname website
+
+8、删除远程某分枝dev
+  git push origin :dev
 
 
 
