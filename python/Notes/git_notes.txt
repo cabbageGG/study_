@@ -28,9 +28,10 @@ Git notes
   git push origin :dev
 
 9、本地创建，删除，切换分枝
-  git checkout -b branchname 创建
+  git branch branchname 创建
   git branch -d branchname 删除
   git checkout branchname 切换
+  git checkout -b branchname 创建并切换到分枝branchname
   
 
 
