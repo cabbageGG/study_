@@ -1,7 +1,7 @@
 nginx+uwsgi部署django
 
 1、安装uwsgi
-  pip install uwsgi
+  pip install uwsgi (centos报错，可能是需要安装yum install python-devel）
   
   使用django项目 测试uwsgi是否安装成功
   uwsgi --http :8000 --module mysite.wsgi
@@ -105,5 +105,20 @@ server {
   5>uwsgi 转发结果给nginx
   6>nginx 返回结果给浏览器用户。
 
-
 参考链接：http://blog.csdn.net/a249900679/article/details/51619382
+
+补充问题：在配置nginx的配置文件时，发生静态文件加载失败问题。在第4步中有如下配置静态文件。
+     # Django media  
+    location /media  {  
+        alias /smile/code/wx_smile/media;  # your Django project's media files - amend as required  
+    }  
+  
+    location /static {  
+        alias /smile/code/wx_smile/static; # your Django project's static files - amend as required  
+    }  
+    但实际上没有加载成功。原因404。
+
+解决办法：1、网上说，把静态文件权限提高777。404解决，但出现403问题。实际上755就ok了。
+        2、在nginx.conf 的头部，将#user nobody; 改成 user root owner; 问题解决！！！！
+
+             
