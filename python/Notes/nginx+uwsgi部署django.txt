@@ -119,6 +119,6 @@ server {
     但实际上没有加载成功。原因404。
 
 解决办法：1、网上说，把静态文件权限提高777。404解决，但出现403问题。实际上755就ok了。
-        2、在nginx.conf 的头部，将#user nobody; 改成 user root owner; 问题解决！！！！
+        2、在nginx.conf 的头部，将#user nobody; 改成 user root owner; 问题解决！！！！(这个问题还分情况，在Mac上改成 user root owner;，在centos上改成 user root;）
 
              
