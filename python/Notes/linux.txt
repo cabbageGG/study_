@@ -1,0 +1,126 @@
+从零开始使用linux构建服务器环境以及部署web服务器
+
+一、基本安装与配置
+1、最小化安装centos7
+
+2、检查网络。ip addr 
+   1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN 
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+   2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 00:0c:29:b6:2a:f2 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.101.132/24 brd 192.168.101.255 scope global dynamic ens33
+       valid_lft 1348sec preferred_lft 1348sec
+    inet6 fe80::20c:29ff:feb6:2af2/64 scope link 
+       valid_lft forever preferred_lft forever
+
+   注：centos7中已经没有ifconfig命令了，最小化安装后，可以用 ip addr 命令查看网络信息。
+       那么习惯ifconfig的用户，则需要yum -y install net-tools即可。
+
+3、设置网络配置文件。可设置静态ip，或者dhcp
+   vi /etc/sysconfig/network-scripts/ifcfg-<interface-name>文件
+   需要将onboot设为yes，表示自动识别网卡
+
+3、检查能否上网，ping。如不能，则重启网络服务试下。
+   service network restart
+   这时，应该可以上网了。
+
+4、设置普通用户为sudoer用户
+   su 切换到root
+   执行visudo 编辑sudo配置文件
+   在root  ALL 这一行，添加一行。将root换成你的其他用户名。
+
+二、配置服务器环境
+1、这时，可以远程shell，使用普通用户进行配置服务环境。
+
+2、pip工具安装。python已经默认有2.7.5版本。但是没有pip命令。
+
+(1)、直接安装提示错误   
+[root@bogon yangjin]# yum install python-pip
+已加载插件：fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.neusoft.edu.cn
+ * extras: mirrors.neusoft.edu.cn
+ * updates: ftp.sjtu.edu.cn
+没有可用软件包 python-pip。
+错误：无须任何处理
+
+(2)、没有python-pip包就执行命令 yum -y install epel-release   
+
+(3)、执行成功之后，再次执行yum install python-pip 
+     这时就可以安装成功了
+
+(4)、另外按需要可以对pip进行升级  pip install --upgrade pip
+
+3、django 安装
+(1)直接安装，pip install django .
+  Downloading Django-2.0.tar.gz (8.0MB)
+    100% |████████████████████████████████| 8.0MB 99kB/s 
+    Complete output from command python setup.py egg_info:
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+      File "/tmp/pip-build-Murq8O/django/setup.py", line 32, in <module>
+        version = __import__('django').get_version()
+      File "django/__init__.py", line 1, in <module>
+        from django.utils.version import get_version
+      File "django/utils/version.py", line 61, in <module>
+        @functools.lru_cache()
+    AttributeError: 'module' object has no attribute 'lru_cache'
+  如果是python2的话可能会报上述错误。这是python2只支持到django 1.11版本。这时，需要指定版本。
+（2）pip install django==1.11
+
+4、git版本控制工具安装
+   yum install git-core
+   git clone github-project
+
+5、补充安装图片库pillow
+   pip intsall pillow
+
+6、启动django-web app服务
+   python manage.py runserver 0.0.0.0:8000
+命令行界面可以安装links，来测试浏览网页。
+yum install links
+links 127.0.0.1:8000
+至此，一个django，web服务正式启动
+
+三、服务发布到外网。这种本地自我欣赏肯定不好，我们需要发布到外网
+1、下载安装花生壳，第三方工具，实现内网穿透。
+   下载地址：https://hsk.oray.com/download/
+   可以选择windows，linux版。
+   注：要实现内网穿透，需要6元开通。
+
+2、在开通后，可以免费得到一个域名，不过不好用。
+   你还可以在注册域名里，再次申请一个自定义前缀的域名，这个还不错。（推荐）
+
+3、将域名映射本机内网ip以及端口号。
+   通常映射127.0.0.1:8000
+   这样不管你的内网ip如何变化，本地服务都能映射到，而不用改ip。
+
+4、至此，在我们启动花生壳的客户端时，可以将本地的django服务，映射到外网。
+   你可以使用免费域名在外网访问。
+
+注意：一定要打开花生壳客户端才行。它的这个动态域名解析，其实需要你本地开一个它的服务，也就是它的客户端。
+
+5、如果是在linux上运行的话，还需要一点改变。
+（1）、下载linux的花生壳版本。
+   下载地址：https://hsk.oray.com/download，选择相应的linux版本。
+（2）、官方使用说明连接如下
+    http://service.oray.com/question/4287.html
+（3）、安装后后，会有一个sn码。利用sn在浏览器登录，
+    登录成功后，一定要切换账号到之前window下注册的账号，
+    这样你才能一个账号多个设备使用，但不能同时使用。
+    此时启动花生壳即可。
+
+总结：由于使用的是花生壳的免费版，感觉还是仅用于个人测试使用，体验下吧，真实到底多大效用还需测试。
+      真正想要有一定访问保证的话，还是需要使用云主机吧。
+
+
+四、借助nginx+uwsgi，来包装转发django服务。
+    当网站发布出去后，肯定需要一些保护措施的，本地自己的服务肯定不够理想了。还是需要使用nginx来包装一层的，更安全。
+1、具体见nginx+uwsig.txt笔记。
+    
+
+

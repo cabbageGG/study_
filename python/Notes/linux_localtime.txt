@@ -1,0 +1,15 @@
+CentOS 7解决Local Time与实际时间相差8小时问题
+[yangjin@localhost ~]$ timedatectl
+      Local time: 五 2017-12-08 20:41:36 CST
+  Universal time: 五 2017-12-08 12:41:36 UTC
+        RTC time: 五 2017-12-08 13:02:20
+       Time zone: Asia/Shanghai (CST, +0800)
+     NTP enabled: n/a
+NTP synchronized: no
+ RTC in local TZ: no
+      DST active: n/a
+
+这里发现Universal time 是对的。所以，我们可以把当前的/etc/localtime 删掉。然后用Universal 来代替。
+rm /etc/localtime
+cp  /usr/share/zoneinfo/Universal /etc/localtime
+这时，再查看，就是对的啦！！
