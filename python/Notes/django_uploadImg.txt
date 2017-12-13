@@ -1,0 +1,45 @@
+Django 上传图片和加载静态图片
+
+
+首先配置图片路径：
+settings.py 配置 media_root 和 meida_url
+
+  MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+  MEDIA_URL = '/media/'
+
+
+加载静态图片：
+   在html里的<img src=“/media/img/1.jpg”>
+   只需要在img标签里的src附上图片的路径即可。
+
+
+上传图片
+1、models里定义图片变量
+  image = ImageField(upload=‘img’)
+  upload = ‘img’ 指定图片上传目录为：media／img 没有img目录，会自定创建
+
+2、上传图片的表单提交
+        <form method="POST" enctype="multipart/form-data" action="{% url "blog:uploadImg" %}">
+	    {% csrf_token %}
+            <input type="file" name="img">
+	    <input type="hidden" name="username" value="{{ userinfo.name }}">
+            <button type="submit">上传</button>
+        </form>
+3、上传图片的后台处理函数—保存图片到相应的变量中
+   def uploadImg(request):
+      if request.method == 'POST':
+        username = request.POST.get("username", "")
+        if username:
+            user = models.User.objects.filter(name=username)
+            if user:
+                user = user[0]
+            user.image = request.FILES.get('img')
+            user.save()
+            return HttpResponseRedirect('/')
+        return render(request, "blog/uploadImg.html")
+
+4、显示图片
+  在html中使用保存图片的变量名的url 如：{{ user.image.url }}
+   
+  
