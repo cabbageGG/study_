@@ -1,0 +1,22 @@
+﻿Django ajax
+
+ajax 一般使用jQuery来发送，主要是可以兼容不同的浏览器
+
+jQuery发送ajax方式有四种写法
+
+$.post("url",{data:data}).done(function(data){});
+$.get("url",{data:data}).done(function(data){});
+$.ajax({ url:"/app01/ajax_submit_set/",
+         type:'POST',
+         tradition:true,   原生模式
+         data:{data:JSON.stringify(data_list)},
+         }).done(function(data){}); 
+$.getJson("url",{data:data}).done(function(data){}); 
+使用.done(function(data){})设置请求成功回调函数 一般状态码200
+使用.fail(function(data){})设置请求失败回调函数 这里302也算失败
+使用.always(function(data){})设置必定执行的回调函数。
+
+
+注意：在django中使用ajax发送post请求时，需要导入from django.views.decorators.csrf import csrf_exempt，同时响应函数需要加上@csrf_exempt装饰器
+
+
