@@ -115,7 +115,9 @@
       admin.site.register(Blog, BlogAdmin)  
   
 
-
+13、页面重定向HttpResponseRedirect
+   return HttpResponseRedirect(‘url’)
+    
 
 
 
