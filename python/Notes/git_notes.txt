@@ -33,5 +33,12 @@ Git notes
   git checkout branchname 切换
   git checkout -b branchname 创建并切换到分枝branchname
   
+10、恢复文件
+  git checkout —- 文件名
+  如过文件已经被git add 到暂存队列，则需要先将文件取消暂存
+  git reset HEAD —- 文件名
+  再执行上面文件恢复命令。
 
+11、查看暂存区文件
+  git status  
 
