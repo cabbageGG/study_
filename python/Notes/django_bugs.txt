@@ -50,7 +50,9 @@ def edit_action(request):
    CommandError: You must set settings.ALLOWED_HOSTS if DEBUG is False.
 
 4、django 表单提交，会默认发一个当前页面的请求！！！
-
+   这是django默认机制，如果有指定action 对象，就不会发送当前页面啦。。
+   如果，不需要页面默认发送请求，而是使用jQuery发送ajax请求。
+   那么我们可以指定这样一个空表达式javascript:(void)
    
    
   
