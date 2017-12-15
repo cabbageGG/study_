@@ -6,11 +6,25 @@ from urllib import parse
 from AticleSpider.items import JobBoleArticleItem, JobBoleArticleItemLoader
 
 from AticleSpider.utils.common import get_md5
+from selenium import webdriver
+from scrapy import signals
+from scrapy.xlib.pydispatch import dispatcher
 
 class JobboleSpider(scrapy.Spider):
     name = 'jobbole'
     allowed_domains = ['blog.jobbole.com']
     start_urls = ['http://blog.jobbole.com/all-posts/']
+
+    # def __init__(self):
+    #     self.browser = webdriver.Chrome(executable_path="/Users/dev/Desktop/chromedriver")
+    #     super(JobboleSpider, self).__init__()
+    #     dispatcher.connect(self.spider_closed, signals.spider_closed)
+    #
+    # def spider_closed(self, spider):
+    #     #当爬虫退出的时候关闭chrome
+    #     print ("spider closed")
+    #     self.browser.quit()
+
 
     def parse(self, response):
         """
@@ -26,9 +40,9 @@ class JobboleSpider(scrapy.Spider):
             post_url = post_node.css("::attr(href)").extract_first("")
             yield Request(url=parse.urljoin(response.url, post_url), meta={'front_image_url':image_url}, callback=self.parse_detail)
 
-        # next_url = response.css(".next.page-numbers::attr(href)").extract_first("")
-        # if next_url:
-        #    yield Request(url=parse.urljoin(response.url, next_url), callback=self.parse)
+        next_url = response.css(".next.page-numbers::attr(href)").extract_first("")
+        if next_url:
+           yield Request(url=parse.urljoin(response.url, next_url), callback=self.parse)
 
     def parse_detail(self, response):
 

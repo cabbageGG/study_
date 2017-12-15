@@ -11,16 +11,19 @@ from AticleSpider.utils.common import get_md5
 class LagouSpider(CrawlSpider):
     name = 'lagou'
     allowed_domains = ['www.lagou.com']
-    start_urls = ['https://www.lagou.com/']
+    start_urls = ['https://www.lagou.com']
+    #start_urls = ['https://www.lagou.com/jobs/list_python%E7%88%AC%E8%99%AB?city=%E5%85%A8%E5%9B%BD&cl=false&fromSearch=true&labelWords=&suginput=']
 
     rules = (
         Rule(LinkExtractor(allow=('zhaopin/.*')), follow=True),
-        Rule(LinkExtractor(allow=('gonsi/j\d+.html')), callback='parse_job', follow=True),
+
+        Rule(LinkExtractor(allow=('gonsi/j\d+.html')), follow=True),
         Rule(LinkExtractor(allow=r'jobs/\d+.html'), callback='parse_job', follow=True),
     )
 
     def parse_job(self, response):
         #解析拉勾网的职位
+        print('aaa')
         item_loader = LagouJobItemLoader(item=LagouJobItem(), response=response)
         item_loader.add_css("title", ".job-name::attr(title)")
         item_loader.add_value("url", response.url)
