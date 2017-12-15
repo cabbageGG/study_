@@ -117,7 +117,30 @@
 
 13、页面重定向HttpResponseRedirect
    return HttpResponseRedirect(‘url’)
-    
+
+14、解决Django默认会把html空格和换行给忽略掉。
+   （1）django 自身有过滤器，linebreaksbr。仅实现加载换行————实际上是对换行符\n进行替换为<br/>
+    (2) 依照这个思路，我们可以自定义过滤器，来替换产生需要的html标签。
+        如：换行符”\n”——> “<br/>”
+           空格” “———> “&nbsp;”
+
+15、django queryset 转化为json
+   在开发中，对于ajax请求，需要将models的queryset转化为json传给javascript，从而进行使用。
+   django中提供了model_to_dict方法，以及serialize 方法。
+   （1）model_to_dict 针对于一个具体的model类型，
+      比如：查询数据库得到的queryset[0]取某一个元素，来转化为dict。
+      from django.forms.models import model_to_dict
+      comments = models.Comments.objects.filter(username=user_name)
+      if comments:
+          comment = comments[0]
+          comment_dict = model_to_dict(comment)
+      不过有些字段转化不了。如：imageField，datetime。
+   （2）serialize 方法：针对不同的转换结构，如：json，xml等
+      from django.core import serializers
+      json_ser = serializers.get_serializer("json")()
+      ret = json_ser.serialize(comments, ensure_ascii=False)
+      ret_json = json.loads(ret)
+    总的来说，推荐使用第二种。毕竟无限制。
 
 
 
