@@ -1,0 +1,29 @@
+﻿ jQuery 绑定相同class的多个标签的事件方法
+
+1、当遇到上述问题时，我们可以用jQuery的each()遍历所有的相同class的标签，分别绑定事件。
+
+2、如：
+ // divid就是某个div的id，each是遍历这个div下的所有a标签
+$("#divid a").each(function(){
+    this.id = i;// 设置每个a标签的id为自增id
+    i++;
+    
+    $(this).click(function(){
+        // 设置每个a标签的onclick事件，在这里你想干吗都可以
+    });
+});
+
+
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
