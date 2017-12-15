@@ -1,4 +1,4 @@
-﻿  django 简单bug记录
+  django 简单bug记录
  
    今天在使用django搭建博客网站时，碰到405错误。真的是一个大坑！！！
 构造url的相应函数，有两种。
@@ -46,12 +46,35 @@ def edit_action(request):
 结果：两种方式的响应内容是一样的，但是在真正浏览器里访问时。第一种方式，会得到一个405的错误！！！！！
       建议以后都使用方式二吧。。。
 
-3、setting.py里的Debug关了，会加载不到static，返回404错误？
+3、setting.py里的Debug关了，会发生错误？
+   CommandError: You must set settings.ALLOWED_HOSTS if DEBUG is False.
 
-   
-   
+4、django 表单提交，会默认发一个当前页面的请求！！！
+   这是django默认机制，如果有指定action 对象，就不会发送当前页面啦。。
+   如果，不需要页面默认发送请求，而是使用jQuery发送ajax请求。
+   那么我们可以指定这样一个空表达式javascript:void(0)
+
+5、自定义过滤器，进行标签替换，解决django换行和空格的显示问题
+   在app目录下，创建templatetags文件夹。注：文件名必须是这样的。
+   在templatetags文件夹下创建__init__.py文件。
+   在templatetags文件夹下创建我们自定义的过滤器函数的py文件。如：myfilter.py
+    myfilter.py
+    #-*- coding: utf-8 -*- 
+    from django.template import Library                         
+    register = Library()                            
+                                                
+    @register.filter                                
+    def replaceTags(content):                       
+        content = content.replace(" ", "&nbsp;")  # 
+        content = content.replace("\n", "<br/>")  # 
+        return content                              
+                                                
+    register.filter('replaceTags', replaceTags)     
+  在html中使用过滤器
+   {% load myfilter %}
   
-  
+   {% autoescape off %}{{ content | replaceTags }}{% endautoescape %}
+   注意：这里必须加上autoescape。不然django就直接显示<br/>字符串啦！
   
   
 

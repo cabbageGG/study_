@@ -1,0 +1,21 @@
+ jQuery ajax
+
+jQuery发送ajax请求有三种方式
+1、$.get(“url”,{data:data}).done(function(data){})
+2、$.post(“url”,{data:data}).done(function(data){})
+3、$.ajax({url:url,method:’POST’,data:data}).done(function(data){})
+
+done 是成功回调函数，还有fail-失败回调函数。
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+

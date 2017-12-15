@@ -9,7 +9,7 @@ __author__ = 'li yangjin'
 from scrapy import cmdline
 
 
-name = 'zhihu'
+name = 'jobbole'
 
 cmd = 'scrapy crawl {0}'.format(name)
 

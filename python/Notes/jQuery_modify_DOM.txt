@@ -1,0 +1,25 @@
+ jQuery modify html 
+
+1、$(‘#id’).empty()
+  清空该html节点下的所有节点
+
+2、$(‘#id’).append(“html”)
+  追加html到id节点中
+
+3、$(‘#id’).val()
+  获取到id节点的值
+
+
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
