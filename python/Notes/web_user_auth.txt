@@ -1,0 +1,7 @@
+﻿用户授权验证，简单点说明就是每次请求API时都提供用户的username和password。一般有两种认证方式，一种是Basic Auth，一种是OAuth。
+(1) Basic Auth: 直接传递用户名和密码
+(2)OAuth: 为用户资源授权提供了一个安全、开放的标准，将会是以后开发平台普遍守。
+         1）应用用APP KEY和APP SECRET换取OAuth_token；
+         2）应用将用户引导到服务商的页面对该OAuth_token进行授权（可能需要输入用户名和密码）；
+         3）服务商的页面跳转回应用，应用再根据参数去服务商获得Access Token；
+         4）使用这个Access Token就可以访问API了。
