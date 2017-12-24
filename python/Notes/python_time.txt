@@ -1,3 +1,4 @@
 python 里时间有两个库 time，datetime
 time.time()直接得到当前的时间戳
-datetime.now()得到当前时间的时刻。
+datetime.now()得到当前时间的时刻。是一个datetime类型，还需要使用strftime格式化输出。
+如：datetime.now().strftime("%Y-%m-%d %H:%M:%S")
