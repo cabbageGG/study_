@@ -1,0 +1,24 @@
+1、安装nvidia显卡驱动。
+   下载驱动文件。（在官网找到对应你机器的显卡的驱动文件，并下载）
+  （1）Ctrl + Alt + F1  #进入命令界面
+  （2）sudo service lightdm stop  #关闭图形界面
+  （3）sudo ./NVIDIA-Linux-x86_64-384.111.run -no-x-check -no-nouveau-check -no-opengl-files
+       -no-x-check安装驱动时关闭x服务
+       -no-nouveau-check安装驱动时禁用Nouveau
+       -no-opengl-files安装时只装驱动文件，不安装Opengl
+  （4）sudo service lightdm restart #重新开启图形界面
+   注意：请严格安装上述步骤安装，否则会出现循环登录问题！！！
+2、安装cuda-8.0
+   在官网下载cuda-8.0。安装官方给出步骤安装即可。
+3、安装cudnn6.0
+   在官网注册一个账号，登录后，可看到cudnn6.0的下载链接，否则只有cudnn5.0以下版本！！！！
+
+   注意：一定要使用这个版本的组合。cuda-8.0，cudnn6.0。其他的tensorflow-gpu会出现不支持的bug。
+
+4、安装tensorflow-gpu
+   sudo pip3 install -i https://pypi.douban.com/simple/ tensorflow-gpu
+   #使用豆瓣源安装tensorflow-gpu 1.4.0
+   #不用使用最新版本1.5.0，它会出现兼容问题！！！
+
+最终环境：
+Ubuntu 16.04 + NVIDIA-384.111(GTX 1080) + cuda-8.0 + cudnn6.0 + python3.5 + tensorflow-gpu 1.4.0

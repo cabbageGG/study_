@@ -114,7 +114,7 @@ def login():
 
 def queryTrainlog():
     print '>>>>>>>>>>>begin queryTrainlog'
-    url = 'https://kyfw.12306.cn/otn/leftTicket/log?leftTicketDTO.train_date=2017-11-02&leftTicketDTO.from_station=CSQ&leftTicketDTO.to_station=CDW&purpose_codes=ADULT'
+    url = 'https://kyfw.12306.cn/otn/leftTicket/log?leftTicketDTO.train_date=2017-12-20&leftTicketDTO.from_station=CSQ&leftTicketDTO.to_station=CDW&purpose_codes=ADULT'
     r = s.get(url, timeout=3, verify=False)
 
     ret = r.json()
@@ -249,5 +249,8 @@ if __name__ == '__main__':
     #hard_requests()
     #submitOrderRequest()
     queryTrainlog()
+   
+
+
 
 

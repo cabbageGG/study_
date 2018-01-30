@@ -1,4 +1,8 @@
 python 里时间有两个库 time，datetime
-time.time()直接得到当前的时间戳
-datetime.now()得到当前时间的时刻。是一个datetime类型，还需要使用strftime格式化输出。
-如：datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+1、time.time()直接得到当前的时间戳。
+   10位时间戳单位是秒，13位时间戳单位是毫秒。
+   time.time()获得的是当前时间的10位时间戳。
+   转换为时间：a = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
+2、datetime.now()得到当前时间的时刻。
+   这是一个datetime类型，还需要使用strftime格式化输出。
+   如：datetime.now().strftime("%Y-%m-%d %H:%M:%S")

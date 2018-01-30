@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-import models
+from blog import models
 
 def index(request):
     articles = models.Article.objects.all()

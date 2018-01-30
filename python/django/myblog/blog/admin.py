@@ -1,4 +1,4 @@
 from django.contrib import admin
-from models import Article
+from blog.models import Article
 
 admin.site.register(Article)
