@@ -20,5 +20,10 @@
    #使用豆瓣源安装tensorflow-gpu 1.4.0
    #不用使用最新版本1.5.0，它会出现兼容问题！！！
 
+5、检测环境配置是否成功
+   import tensorflow as tf
+   sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+   编写上述代码，运行。如果打印出gpu信息，则表示环境配置成功！！！
+
 最终环境：
 Ubuntu 16.04 + NVIDIA-384.111(GTX 1080) + cuda-8.0 + cudnn6.0 + python3.5 + tensorflow-gpu 1.4.0
