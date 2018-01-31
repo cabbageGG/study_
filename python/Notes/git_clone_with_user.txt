@@ -1,0 +1,8 @@
+﻿当我们在clone时，需要传入user：password时，可以直接在clone时传入
+
+方式：
+sudo git clone http://username:password@remote
+
+注意：username中如果有@符号，需要转为%40
+      remote地址，是http地址。不要使用ssh地址！！！
+
