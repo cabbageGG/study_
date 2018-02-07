@@ -8,12 +8,37 @@
        -no-opengl-files安装时只装驱动文件，不安装Opengl
   （4）sudo service lightdm restart #重新开启图形界面
    注意：请严格安装上述步骤安装，否则会出现循环登录问题！！！
+
+
 2、安装cuda-8.0
    在官网下载cuda-8.0。安装官方给出步骤安装即可。
+   (注意：这里不要下载deb文件，下载run文件吧。）
+  （deb文件，它直接默认会安装一遍最新的nvidia驱动，而且安装cuda时要指定版本，比如cuda-8.0，否则也是默认最新！！！）
+   
+   deb：
+   sudo dpkg -i cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64.deb
+   sudo apt-get update
+   sudo apt-get install cuda-8.0
+   
+   此时，需要卸载nvidia驱动。并重新安装对应版本的nvidia驱动。
+   sudo apt-get remove nvidia-*
+   跳到第一步。。。
+		
+   
+ 
 3、安装cudnn6.0
    在官网注册一个账号，登录后，可看到cudnn6.0的下载链接，否则只有cudnn5.0以下版本！！！！
 
    注意：一定要使用这个版本的组合。cuda-8.0，cudnn6.0。其他的tensorflow-gpu会出现不支持的bug。
+
+   解压，将include，lib64文件夹下的内容，分贝拷贝至/usr/local/cuda/include/ 和 /usr/local/cuda/lib64/
+         将拷贝的文件加入可读权限。sudo chmod a+r /usr/local/cuda/include/cudnn.h   /usr/local/cuda/lib64/libcudnn*
+
+   配置cuda的环境比变量！
+   sudo vim ~/.bash_profile
+   export PATH="$PATH:/usr/local/cuda/bin"
+   export LD_LIBRARY_PATH="/usr/local/cuda/lib64"
+
 
 4、安装tensorflow-gpu
    sudo pip3 install -i https://pypi.douban.com/simple/ tensorflow-gpu
@@ -27,3 +52,26 @@
 
 最终环境：
 Ubuntu 16.04 + NVIDIA-384.111(GTX 1080) + cuda-8.0 + cudnn6.0 + python3.5 + tensorflow-gpu 1.4.0
+
+
+可能问题：
+1、安装cuda时，它会自动安装最新的nvidia的驱动。会覆盖掉之前自己安装的驱动！！！！。
+   解决：卸载cuda，重新安装。或者只卸载nvidia。
+   sudo apt-get remove cuda
+   sudo apt-get remove nvidia-*
+   sudo apt-get autoremove
+
+2、重新安装nvidia驱动，可能出现无法加载内核 nvidia.ko?
+   解决：(1)保证卸载掉所有的nvidia驱动。
+         (2)然后，设置配置文件/etc/modprobe.d/blacklist-nouveau.conf
+            里面写入如下代码
+            blacklist nouveau
+            options nouveau modeset=0
+         (3)sudo update-initramfs -u #执行命令，使之生效
+         (4)reboot
+   确认nouveau被屏蔽
+   lsmod | grep nouveau
+   无输出则被屏蔽。
+
+3、出现循环登录，就说明驱动安装不正确。需要重新安装。
+
