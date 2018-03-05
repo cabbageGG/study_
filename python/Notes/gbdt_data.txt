@@ -1,0 +1,25 @@
+三张数据表：bridgedata, gaosu_event, tunneldata
+
+1、gaosu_event (事故数据）
+   uuid:唯一标识号 (str, md5加密）
+   btime:发生事故时间（datetime）
+   lxname:道路名称 （str）
+   direction:道路方向（int，0/1，正向/反向）
+   stake1: 发生事故地点（float，道路坐标值0-Lmax：道路全长）
+   longitude1：经度 （int，0-360）
+   latitude1：维度  （int，0-360）
+   eventtype：是否发生事故。（int，0/1，未发生/发生）
+
+2、bridgedata (桥梁数据)
+   lxname:道路的名称 （str） 
+   stake:桥梁坐落于道路的位置 （float，道路坐标值0-Lmax：道路全长）
+   offset:桥梁长度  （int）
+
+3、tunneldata （隧道数据）
+   lxname:道路的名称 （str）
+   stake:隧道坐落于道路的位置 （float，道路坐标值0-Lmax：道路全长）
+   offset:隧道长度 （int）
+
+一张Excel表：roadstake_bayes.xlsx
+包含所有道路的信息。道路名称，道路段（2公里一段）
+比如：huangpuroad_0_2 huangpuroad_2_4
