@@ -1,0 +1,15 @@
+为了保护python源代码，可以将py代码，使用Cython编译成pyd文件。
+
+setup.py
+
+from distutils.core import setup
+from Cython.Build import cythonize
+
+setup(ext_modules = cythonize(["your_file.py"]),script_args=["build_ext"])
+
+可能出现的问题:
+unable to find vcvarsall.bat
+这个问题是，msvc9compiler.py 这个文件的219行，find_vcvarsall函数找不到vcvarsall.bat。
+而vcvarsall.bat这个文件是visual studio里面的。
+可以寻找你计算机上该文件的位置，然后返回该文件的绝对路径。
+没有vcvarsall.bat，就需要安装visual studio啦。
